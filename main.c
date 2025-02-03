@@ -7,8 +7,9 @@ void mainMenu(Player *player) {
         printf("\nBienvenue, %s ! Que voulez-vous faire ?\n", player->name);
         printf("1. Combattre dans la nature\n");
         printf("2. Accéder au magasin\n");
-        printf("3. Sauvegarder le jeu\n");
-        printf("4. Quitter\n");
+        printf("3. Centre Supémon\n");
+        printf("4. Sauvegarder le jeu\n");
+        printf("5. Quitter\n");
         printf("Choisissez une option : ");
         scanf("%d", &choice);
 
@@ -20,9 +21,12 @@ void mainMenu(Player *player) {
                 // Accéder au magasin
                 break;
             case 3:
-                saveGame(player);
+                // Centre Supémon
                 break;
             case 4:
+                saveGame(player);
+                break;
+            case 5:
                 printf("Au revoir !\n");
                 break;
             default:
