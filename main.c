@@ -44,6 +44,9 @@ int main() {
     initSupemon(&supmander, "Supmander", 1, 10, 1, 1, 1, 2, 1);
     addSupemon(&player, supmander);
 
+    Supemon supasaur;
+    initSupemon(&supasaur, "Supasaur", 1, 9, 1, 1, 3, 2, 2);
+    addSupemon(&player, supmander);
     // Lancer le menu principal
     mainMenu(&player);
 
