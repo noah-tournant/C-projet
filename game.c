@@ -13,9 +13,9 @@ void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int a
     supemon->evasion = evasion;
     supemon->accuracy = accuracy;
     supemon->speed = speed;
-    supermon->spell1= spell1;
-    supermon->spell2= spell2;
-    
+    for (int i = 0; i < MAX_MOVES; i++) {
+        supemon->moves[i] = moves[i];
+    }
 }
 
 void initPlayer(Player *player, const char *name) {

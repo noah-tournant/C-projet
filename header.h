@@ -6,14 +6,9 @@
 #include <string.h>
 
 #define MAX_SUPEMON 10
-#define MAX_MOVES 5
+#define MAX_MOVES 4
 #define MAX_ITEMS 10
 
-
-
-#define MAX_SUPEMON 10
-#define MAX_MOVES 5
-#define MAX_ITEMS 10
 
 // Définir une structure pour les mouvements
 typedef struct {

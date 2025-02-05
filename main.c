@@ -98,13 +98,6 @@ void battle(Player *player) {
     }
 }
 
-    if (playerSupemon->HP <= 0) {
-        printf("Your Supemon fainted!\n");
-    } else {
-        printf("You defeated the wild %s!\n", enemySupemon.name);
-        // Reward player
-    }
-}
 
 void shop(Player *player) {
     int choice;
@@ -120,16 +113,43 @@ void shop(Player *player) {
 
         switch (choice) {
             case 1:
-                // Buy Potion
+                if (player->supcoins >= 100 && player->itemCount < MAX_ITEMS) {
+                    player->supcoins -= 100;
+                    strcpy(player->items[player->itemCount].name, "Potion");
+                    player->items[player->itemCount].price = 100;
+                    player->items[player->itemCount].effectValue = 5;
+                    player->itemCount++;
+                    printf("You bought a Potion!\n");
+                } else {
+                    printf("Not enough Supcoins or inventory full.\n");
+                }
                 break;
             case 2:
-                // Buy Super Potion
+                if (player->supcoins >= 300 && player->itemCount < MAX_ITEMS) {
+                    player->supcoins -= 300;
+                    strcpy(player->items[player->itemCount].name, "Super Potion");
+                    player->items[player->itemCount].price = 300;
+                    player->items[player->itemCount].effectValue = 10;
+                    player->itemCount++;
+                    printf("You bought a Super Potion!\n");
+                } else {
+                    printf("Not enough Supcoins or inventory full.\n");
+                }
                 break;
             case 3:
-                // Buy Rare Candy
+                if (player->supcoins >= 700 && player->itemCount < MAX_ITEMS) {
+                    player->supcoins -= 700;
+                    strcpy(player->items[player->itemCount].name, "Rare Candy");
+                    player->items[player->itemCount].price = 700;
+                    player->items[player->itemCount].effectValue = 1; // Rare Candy effect
+                    player->itemCount++;
+                    printf("You bought a Rare Candy!\n");
+                } else {
+                    printf("Not enough Supcoins or inventory full.\n");
+                }
                 break;
             case 4:
-                // Sell items
+                // Implement selling items
                 break;
             case 5:
                 printf("Thank you for visiting the shop!\n");
@@ -141,22 +161,103 @@ void shop(Player *player) {
 }
 
 
+
 int main() {
     Player player;
     initPlayer(&player, "Noah");
 
-    // Ajouter des Supémons par défaut
+    Move supmanderMoves[MAX_MOVES] = {
+        {"cri", 0, 1},
+        {"griffe", 2, 0},
+        {"", 0, 0},
+        {"", 0, 0},
+    }
+
+    // Define moves for Supasaur
+    Move supasaurMoves[MAX_MOVES] = {
+        {"liane gigoteuse", 2, 0},
+        {"planification", 0, 1},
+        {"", 0, 0},
+        {"", 0, 0},
+    };
+
+    // Define moves for Supirtle
+    Move supirtleMoves[MAX_MOVES] = {
+        {"pistolet à O", 2, 0},
+        {"armure", 0, 1},
+        {"", 0, 0},
+        {"", 0, 0},
+      
+    };
+     Move mewtooMoves[MAX_MOVES] = {
+        {"balles ombres", 3, 0},
+        {"flex", 0, 2},
+        {"", 0, 0},
+        {"", 0, 0}
+    };
+    Move pikachuMoves[MAX_MOVES] = {
+        {"vive attaque", 2, 0},
+        {"mimi queue", 0, 1},
+        {"", 0, 0},
+        {"", 0, 0}
+    };
+
+    // Define moves for Evoli
+    Move evoliMoves[MAX_MOVES] = {
+        {"charge", 2, 0},
+        {"rugissement", 0, 1},
+        {"", 0, 0},
+        {"", 0, 0}
+    };
+
+    // Define moves for Tiplouf
+    Move tiploufMoves[MAX_MOVES] = {
+        {"ecume", 2, 0},
+        {"bulle d'O", 3, 0},
+        {"", 0, 0},
+        {"", 0, 0}
+    };
+
+    // Define moves for Voltorbe
+    Move voltorbeMoves[MAX_MOVES] = {
+        {"etincelle", 2, 0},
+        {"charge", 1, 0},
+        {"", 0, 0},
+        {"", 0, 0}
+    };
+
     Supemon supmander;
-    initSupemon(&supmander, "Supmander", 1, 10, 1, 1, 1, 2, 1);
+    initSupemon(&supmander, "Supmander", 1, 10, 1, 1, 1, 2, 1, supmanderMoves);
     addSupemon(&player, supmander);
 
     Supemon supasaur;
-    initSupemon(&supasaur, "Supasaur", 1, 9, 1, 1, 3, 2, 2);
-    addSupemon(&player, supmander);
+    initSupemon(&supasaur, "Supasaur", 1, 9, 1, 1, 3, 2, 2, supasaurMoves);
+    addSupemon(&player, supasaur);
 
     Supemon supirtle;
-    initSupemon(&supirtle, "Supirtle", 1, 11, 1, 2, 2, 1, 2);
-    addSupemon(&player, supmander);
+    initSupemon(&supirtle, "Supirtle", 1, 11, 1, 2, 2, 1, 2, supirtleMoves);
+    addSupemon(&player, supirtle);
+
+    Supemon mewtoo;
+    initSupemon(&mewtoo, "Mewtoo", 1, 20, 3, 3, 3, 2, 3, mewtooMoves);
+    addSupemon(&player, mewtoo);
+
+    Supemon pikachu;
+    initSupemon(&pikachu, "Pikachu", 1, 8, 1, 1, 3, 2, 3, pikachuMoves);
+    addSupemon(&player, pikachu);
+
+    Supemon evoli;
+    initSupemon(&evoli, "Evoli", 1, 9, 1, 1, 2, 2, 2, evoliMoves);
+    addSupemon(&player, evoli);
+
+    Supemon tiplouf;
+    initSupemon(&tiplouf, "Tiplouf", 1, 8, 2, 2, 2, 2, 2, tiploufMoves);
+    addSupemon(&player, tiplouf);
+
+    Supemon voltorbe;
+    initSupemon(&voltorbe, "Voltorbe", 1, 7, 1, 1, 1, 1, 1, voltorbeMoves);
+    addSupemon(&player, voltorbe);
+
     // Lancer le menu principal
     mainMenu(&player);
 
