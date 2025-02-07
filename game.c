@@ -18,6 +18,7 @@ void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int a
     }
 }
 
+
 void initPlayer(Player *player, const char *name) {
     strcpy(player->name, name);
     player->supcoins = 500; 

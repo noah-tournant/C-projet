@@ -36,18 +36,17 @@ void mainMenu(Player *player) {
 }
 
 void battle(Player *player) {
-    Supemon *playerSupemon = &player->supemons[player->selectedSupemonIndex];
+    // Initialize player's Supemon (first in the list)
+    Supemon *playerSupemon = &player->supemons[0];
+
+    // Initialize enemy Supemon (randomly chosen from player's list)
     Supemon enemySupemon;
-
-    // Select a random Supémon from the player's list to base the enemy Supémon on
-    int randomIndex = rand() % MAX_SUPEMON;
+    int randomIndex = rand() % player->supemonCount;
     Supemon *randomSupemon = &player->supemons[randomIndex];
-
-    // Initialize the enemy Supémon with the same level and proportional stats
     initSupemon(&enemySupemon, randomSupemon->name, playerSupemon->level, 
                 randomSupemon->maxHP, randomSupemon->attack, randomSupemon->defense, 
                 randomSupemon->evasion, randomSupemon->accuracy, randomSupemon->speed);
-
+    
     printf("A wild %s appeared!\n", enemySupemon.name);
 
     while (playerSupemon->HP > 0 && enemySupemon.HP > 0) {
@@ -58,12 +57,15 @@ void battle(Player *player) {
         if (playerTurn) {
             // Player's turn
             int action;
-            printf("Choose an action:\n1. Move\n2. Change Supemon\n3. Use an item\n4. Run away\n5. Capture\n");
+            printf("Your turn...\n\n %s (enemy)\n--------------------\n HP : %d/%d        Lvl:%d\n Atk: %d           Def:%d\n Acc:%d        Eva:%d\n-------------------------- \n %s (%s)\n--------------------\n HP : %d/%d        Lvl:%d\n Atk: %d           Def:%d\n Acc:%d        Eva:%d\n--------------------------\n\n ------------------------------\n | choisissez une action\n |    1- Mouvements     |\n |    2- changer de supémon     | \n |    3- Utiliser un objet    |\n |    4- Capturer     |\n |    5- Fuir    |\n ------------------------\n",
+                enemySupemon.name, enemySupemon.HP, enemySupemon.maxHP, enemySupemon.level, enemySupemon.attack, enemySupemon.defense, enemySupemon.accuracy, enemySupemon.evasion,
+                playerSupemon->name, player->name, playerSupemon->HP, playerSupemon->maxHP, playerSupemon->level, playerSupemon->attack, playerSupemon->defense, playerSupemon->accuracy, playerSupemon->evasion);
+            printf("1, 2, 3, 4, 5 : ");
             scanf("%d", &action);
 
             switch (action) {
                 case 1:
-                    // Player chooses a move
+                    
                     break;
                 case 2:
                     // Player changes Supemon
@@ -72,10 +74,10 @@ void battle(Player *player) {
                     // Player uses an item
                     break;
                 case 4:
-                    // Player tries to run away
+                    // capturer
                     break;
                 case 5:
-                    // Player tries to capture the enemy Supemon
+                    // fuir
                     break;
                 default:
                     printf("Invalid action. Try again.\n");
@@ -84,11 +86,10 @@ void battle(Player *player) {
             // Enemy's turn
             int moveIndex = rand() % MAX_MOVES;
             Move enemyMove = enemySupemon.moves[moveIndex];
-            printf("Enemy %s uses %s!\n", enemySupemon.name, enemyMove.name);
+            printf("Enemy %s uses %s!\n", enemySupemon.name, enemyMove.name);2
             // Apply move effects
         }
     }
-
 
     if (playerSupemon->HP <= 0) {
         printf("Your Supemon fainted!\n");
@@ -103,61 +104,90 @@ void shop(Player *player) {
     int choice;
     do {
         printf("Welcome to the shop! You have %d Supcoins.\n", player->supcoins);
-        printf("1. Buy Potion (100 Supcoins)\n");
-        printf("2. Buy Super Potion (300 Supcoins)\n");
-        printf("3. Buy Rare Candy (700 Supcoins)\n");
-        printf("4. Sell items\n");
-        printf("5. Exit shop\n");
+        printf("1. Buy items\n");
+        printf("2. Sell items\n");
+        printf("3. Exit shop\n");
         printf("Choose an option: ");
         scanf("%d", &choice);
 
         switch (choice) {
-            case 1:
-                if (player->supcoins >= 100 && player->itemCount < MAX_ITEMS) {
-                    player->supcoins -= 100;
-                    strcpy(player->items[player->itemCount].name, "Potion");
-                    player->items[player->itemCount].price = 100;
-                    player->items[player->itemCount].effectValue = 5;
-                    player->itemCount++;
-                    printf("You bought a Potion!\n");
-                } else {
-                    printf("Not enough Supcoins or inventory full.\n");
+            case 1: {
+                int buyChoice;
+                displayItemsForSale();
+                printf("Voici les items à acheter: ");
+                scanf("%d", &buyChoice);
+
+                switch (buyChoice) {
+                    case 1:
+                        if (player->supcoins >= 100 && player->itemCount < MAX_ITEMS) {
+                            player->supcoins -= 100;
+                            strcpy(player->items[player->itemCount].name, "Potion");
+                            player->items[player->itemCount].price = 100;
+                            player->items[player->itemCount].effectValue = 5;
+                            player->itemCount++;
+                            printf("You bought a Potion!\n");
+                        } else {
+                            printf("Not enough Supcoins or inventory full.\n");
+                        }
+                        break;
+                    case 2:
+                        if (player->supcoins >= 300 && player->itemCount < MAX_ITEMS) {
+                            player->supcoins -= 300;
+                            strcpy(player->items[player->itemCount].name, "Super Potion");
+                            player->items[player->itemCount].price = 300;
+                            player->items[player->itemCount].effectValue = 10;
+                            player->itemCount++;
+                            printf("You bought a Super Potion!\n");
+                        } else {
+                            printf("Not enough Supcoins or inventory full.\n");
+                        }
+                        break;
+                    case 3:
+                        if (player->supcoins >= 700 && player->itemCount < MAX_ITEMS) {
+                            player->supcoins -= 700;
+                            strcpy(player->items[player->itemCount].name, "Rare Candy");
+                            player->items[player->itemCount].price = 700;
+                            player->items[player->itemCount].effectValue = 1; // Rare Candy effect
+                            player->itemCount++;
+                            printf("You bought a Rare Candy!\n");
+                        } else {
+                            printf("Not enough Supcoins or inventory full.\n");
+                        }
+                        break;
+                    default:
+                        printf("Invalid choice. Try again.\n");
                 }
                 break;
-            case 2:
-                if (player->supcoins >= 300 && player->itemCount < MAX_ITEMS) {
-                    player->supcoins -= 300;
-                    strcpy(player->items[player->itemCount].name, "Super Potion");
-                    player->items[player->itemCount].price = 300;
-                    player->items[player->itemCount].effectValue = 10;
-                    player->itemCount++;
-                    printf("You bought a Super Potion!\n");
+            }
+            case 2: {
+                int sellChoice;
+                displayPlayerItems(player);
+                printf("Choose an item to sell: ");
+                scanf("%d", &sellChoice);
+
+                if (sellChoice > 0 && sellChoice <= player->itemCount) {
+                    int itemIndex = sellChoice - 1;
+                    int sellingPrice = player->items[itemIndex].price / 2;
+                    player->supcoins += sellingPrice;
+                    printf("You sold %s for %d Supcoins.\n", player->items[itemIndex].name, sellingPrice);
+
+                    // Remove the sold item from the inventory
+                    for (int i = itemIndex; i < player->itemCount - 1; i++) {
+                        player->items[i] = player->items[i + 1];
+                    }
+                    player->itemCount--;
                 } else {
-                    printf("Not enough Supcoins or inventory full.\n");
+                    printf("Invalid choice. Try again.\n");
                 }
                 break;
+            }
             case 3:
-                if (player->supcoins >= 700 && player->itemCount < MAX_ITEMS) {
-                    player->supcoins -= 700;
-                    strcpy(player->items[player->itemCount].name, "Rare Candy");
-                    player->items[player->itemCount].price = 700;
-                    player->items[player->itemCount].effectValue = 1; // Rare Candy effect
-                    player->itemCount++;
-                    printf("You bought a Rare Candy!\n");
-                } else {
-                    printf("Not enough Supcoins or inventory full.\n");
-                }
-                break;
-            case 4:
-                // Implement selling items
-                break;
-            case 5:
                 printf("Thank you for visiting the shop!\n");
                 break;
             default:
                 printf("Invalid choice. Try again.\n");
         }
-    } while (choice != 5);
+    } while (choice != 3);
 }
 
 
