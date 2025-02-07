@@ -2,12 +2,11 @@
 
 
 
-void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int attack, int defense, int evasion, int accuracy, int speed, char *spell1, char *spell2) {
-    strcpy(supemon->name, name);
+void initSupemon(Supemon *supemon, const char *name, int level, int maxHP,int hp, int attack, int defense, int evasion, int accuracy, int speed, Move moves[MAX_MOVES]) {
     supemon->level = level;
     supemon->experience = 0;
     supemon->maxHP = maxHP;
-    supemon->HP = maxHP;
+    supemon->HP = hp;
     supemon->attack = attack;
     supemon->defense = defense;
     supemon->evasion = evasion;
@@ -45,8 +44,6 @@ void displaySupemon(Supemon *supemon) {
     printf("Evasion: %d\n", supemon->evasion);
     printf("Précision: %d\n", supemon->accuracy);
     printf("Vitesse: %d\n", supemon->speed);
-    printf("1er sort: %d\n", supemon->spell1;)
-    printf("2eme sort: %d\n", supemon->spell2;)
 }
 
 

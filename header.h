@@ -17,7 +17,7 @@ typedef struct {
     int statChange;
 } Move;
 
-// Définir une structure pour les Supémons
+
 typedef struct {
     char name[20];
     int level;
@@ -45,13 +45,14 @@ typedef struct {
     int supcoins;
     Supemon supemons[MAX_SUPEMON];
     int supemonCount;
+    int selectedSupemonIndex;
     Item items[MAX_ITEMS];
     int itemCount;
-    Supemon *selectedSupemon;
+    
 } Player;
 
 // Déclaration des fonctions
-void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int attack, int defense, int evasion, int accuracy, int speed);
+void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int hp,int attack, int defense, int evasion, int accuracy, int speed, Move moves[MAX_MOVES]);
 void initPlayer(Player *player, const char *name);
 void addSupemon(Player *player, Supemon supemon);
 void displaySupemon(Supemon *supemon);
@@ -59,5 +60,8 @@ void attack(Supemon *attacker, Supemon *defender);
 void saveGame(Player *player);
 void loadGame(Player *player);
 void mainMenu(Player *player);
+void battle(Player *player);
+void shop(Player *player);
+
 
 #endif // HEADER_H

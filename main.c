@@ -18,7 +18,7 @@ void mainMenu(Player *player) {
                 battle(player);
                 break;
             case 2:
-                shop(player);
+                shop(player );
                 break;
             case 3:
                 // Centre Supémon
@@ -45,8 +45,8 @@ void battle(Player *player) {
 
     // Initialize the enemy Supémon with the same level and proportional stats
     initSupemon(&enemySupemon, randomSupemon->name, playerSupemon->level, 
-                randomSupemon->maxHP, randomSupemon->attack, randomSupemon->defense, 
-                randomSupemon->evasion, randomSupemon->accuracy, randomSupemon->speed);
+                randomSupemon->maxHP,randomSupemon->HP, randomSupemon->attack, randomSupemon->defense, 
+                randomSupemon->evasion, randomSupemon->accuracy, randomSupemon->speed, randomSupemon->moves);
 
     printf("A wild %s appeared!\n", enemySupemon.name);
 
@@ -164,16 +164,17 @@ void shop(Player *player) {
 
 int main() {
     Player player;
-    initPlayer(&player, "Noah");
+    printf("Votre prénom");
+    scanf("%49s", player.name);
+    initPlayer(&player, player.name);
 
     Move supmanderMoves[MAX_MOVES] = {
         {"cri", 0, 1},
         {"griffe", 2, 0},
         {"", 0, 0},
         {"", 0, 0},
-    }
+    };
 
-    // Define moves for Supasaur
     Move supasaurMoves[MAX_MOVES] = {
         {"liane gigoteuse", 2, 0},
         {"planification", 0, 1},
@@ -189,7 +190,7 @@ int main() {
         {"", 0, 0},
       
     };
-     Move mewtooMoves[MAX_MOVES] = {
+    Move mewtooMoves[MAX_MOVES] = {
         {"balles ombres", 3, 0},
         {"flex", 0, 2},
         {"", 0, 0},
@@ -227,35 +228,35 @@ int main() {
     };
 
     Supemon supmander;
-    initSupemon(&supmander, "Supmander", 1, 10, 1, 1, 1, 2, 1, supmanderMoves);
+    initSupemon(&supmander, "Supmander", 1, 10,10, 1, 1, 1, 2, 1, supmanderMoves);
     addSupemon(&player, supmander);
 
     Supemon supasaur;
-    initSupemon(&supasaur, "Supasaur", 1, 9, 1, 1, 3, 2, 2, supasaurMoves);
+    initSupemon(&supasaur, "Supasaur", 1, 9,9, 1, 1, 3, 2, 2, supasaurMoves);
     addSupemon(&player, supasaur);
 
     Supemon supirtle;
-    initSupemon(&supirtle, "Supirtle", 1, 11, 1, 2, 2, 1, 2, supirtleMoves);
+    initSupemon(&supirtle, "Supirtle", 1, 11,11, 1, 2, 2, 1, 2, supirtleMoves);
     addSupemon(&player, supirtle);
 
     Supemon mewtoo;
-    initSupemon(&mewtoo, "Mewtoo", 1, 20, 3, 3, 3, 2, 3, mewtooMoves);
+    initSupemon(&mewtoo, "Mewtoo", 1, 20,20, 3, 3, 3, 2, 3, mewtooMoves);
     addSupemon(&player, mewtoo);
 
     Supemon pikachu;
-    initSupemon(&pikachu, "Pikachu", 1, 8, 1, 1, 3, 2, 3, pikachuMoves);
+    initSupemon(&pikachu, "Pikachu", 1, 8,8, 1, 1, 3, 2, 3, pikachuMoves);
     addSupemon(&player, pikachu);
 
     Supemon evoli;
-    initSupemon(&evoli, "Evoli", 1, 9, 1, 1, 2, 2, 2, evoliMoves);
+    initSupemon(&evoli, "Evoli", 1, 9,9, 1, 1, 2, 2, 2, evoliMoves);
     addSupemon(&player, evoli);
 
     Supemon tiplouf;
-    initSupemon(&tiplouf, "Tiplouf", 1, 8, 2, 2, 2, 2, 2, tiploufMoves);
+    initSupemon(&tiplouf, "Tiplouf", 1, 8,8, 2, 2, 2, 2, 2, tiploufMoves);
     addSupemon(&player, tiplouf);
 
     Supemon voltorbe;
-    initSupemon(&voltorbe, "Voltorbe", 1, 7, 1, 1, 1, 1, 1, voltorbeMoves);
+    initSupemon(&voltorbe, "Voltorbe", 1,7,7, 1, 1, 1, 1, 1, voltorbeMoves);
     addSupemon(&player, voltorbe);
 
     // Lancer le menu principal
