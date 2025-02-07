@@ -164,7 +164,7 @@ void shop(Player *player) {
 
 int main() {
     Player player;
-    printf("Votre prénom");
+    printf("Votre prénom\n");
     scanf("%49s", player.name);
     initPlayer(&player, player.name);
 
@@ -226,39 +226,52 @@ int main() {
         {"", 0, 0},
         {"", 0, 0}
     };
-
     Supemon supmander;
     initSupemon(&supmander, "Supmander", 1, 10,10, 1, 1, 1, 2, 1, supmanderMoves);
-    addSupemon(&player, supmander);
-
+   
     Supemon supasaur;
     initSupemon(&supasaur, "Supasaur", 1, 9,9, 1, 1, 3, 2, 2, supasaurMoves);
-    addSupemon(&player, supasaur);
-
+   
     Supemon supirtle;
     initSupemon(&supirtle, "Supirtle", 1, 11,11, 1, 2, 2, 1, 2, supirtleMoves);
-    addSupemon(&player, supirtle);
 
     Supemon mewtoo;
     initSupemon(&mewtoo, "Mewtoo", 1, 20,20, 3, 3, 3, 2, 3, mewtooMoves);
-    addSupemon(&player, mewtoo);
+    addSupemonsauvage(mewtoo);
 
     Supemon pikachu;
     initSupemon(&pikachu, "Pikachu", 1, 8,8, 1, 1, 3, 2, 3, pikachuMoves);
-    addSupemon(&player, pikachu);
+    addSupemonsauvage(pikachu);
 
     Supemon evoli;
     initSupemon(&evoli, "Evoli", 1, 9,9, 1, 1, 2, 2, 2, evoliMoves);
-    addSupemon(&player, evoli);
+    addSupemonsauvage(evoli);
 
     Supemon tiplouf;
     initSupemon(&tiplouf, "Tiplouf", 1, 8,8, 2, 2, 2, 2, 2, tiploufMoves);
-    addSupemon(&player, tiplouf);
+    addSupemonsauvage(tiplouf);
 
     Supemon voltorbe;
     initSupemon(&voltorbe, "Voltorbe", 1,7,7, 1, 1, 1, 1, 1, voltorbeMoves);
-    addSupemon(&player, voltorbe);
+    addSupemonsauvage(voltorbe);
 
+    printf("choissiez entre 1:Supmander, 2:Supasaur et 3:Supirtle\n");
+    scanf("%d", &player.selectedSupemonIndex);
+    if (player.selectedSupemonIndex == 1){
+        printf("vous avez choisi Supmander\n");
+        addSupemon(&player, supmander);
+    }
+    else if (player.selectedSupemonIndex == 2){
+        printf("vous avez choisi Supasaur\n");
+        addSupemon(&player, supasaur);
+    }
+    else if (player.selectedSupemonIndex == 3){
+        printf("vous avez choisi Supirtle\n");
+        addSupemon(&player, supirtle);
+    }
+    else{
+        printf("choix invalide\n");
+    }
     // Lancer le menu principal
     mainMenu(&player);
 

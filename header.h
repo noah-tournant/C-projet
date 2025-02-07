@@ -17,7 +17,6 @@ typedef struct {
     int statChange;
 } Move;
 
-
 typedef struct {
     char name[20];
     int level;
@@ -62,6 +61,8 @@ void loadGame(Player *player);
 void mainMenu(Player *player);
 void battle(Player *player);
 void shop(Player *player);
+void addSupemonsauvage(Supemon supemon);
+
 
 
 #endif // HEADER_H

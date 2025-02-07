@@ -24,7 +24,6 @@ void initPlayer(Player *player, const char *name) {
     player->itemCount = 0;
 }
 
-
 void addSupemon(Player *player, Supemon supemon) {
     if (player->supemonCount < MAX_SUPEMON) {
         player->supemons[player->supemonCount] = supemon;
@@ -34,6 +33,19 @@ void addSupemon(Player *player, Supemon supemon) {
     }
 }
 
+
+Supemon wildSupemons[10];  // Tableau de Supémons sauvages
+int wildSupemonCount = 0;  // Compteur pour suivre le nombre de Supémons sauvages
+
+// Fonction pour ajouter un Supemon à la liste des Supémons sauvages
+void addSupemonsauvage(Supemon supemon) {
+    if (wildSupemonCount < 10) {
+        wildSupemons[wildSupemonCount] = supemon;  // Ajouter le Supemon à la liste
+        wildSupemonCount++;  // Incrémenter le compteur
+    } else {
+        printf("La liste des Supémons sauvages est pleine !\n");
+    }
+}
 
 void displaySupemon(Supemon *supemon) {
     printf("Nom: %s\n", supemon->name);
