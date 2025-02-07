@@ -62,7 +62,7 @@ void mainMenu(Player *player);
 void battle(Player *player);
 void shop(Player *player);
 void addSupemonsauvage(Supemon supemon);
-
+void sell(Player *player);
 
 
 #endif // HEADER_H

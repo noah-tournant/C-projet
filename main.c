@@ -4,6 +4,7 @@
 void mainMenu(Player *player) {
     int choice;
     do {
+        printf("----------------------------------------");
         printf("\nBienvenue, %s ! Que voulez-vous faire ?\n", player->name);
         printf("1. Combattre dans la nature\n");
         printf("2. Accéder au magasin\n");
@@ -102,13 +103,14 @@ void battle(Player *player) {
 void shop(Player *player) {
     int choice;
     do {
-        printf("Welcome to the shop! You have %d Supcoins.\n", player->supcoins);
-        printf("1. Buy Potion (100 Supcoins)\n");
-        printf("2. Buy Super Potion (300 Supcoins)\n");
-        printf("3. Buy Rare Candy (700 Supcoins)\n");
-        printf("4. Sell items\n");
-        printf("5. Exit shop\n");
-        printf("Choose an option: ");
+        printf("----------------------------------------\n");
+        printf("Bienvenue dans la boutique, vous avez %d Supcoins.\n", player->supcoins);
+        printf("1. Acheter Potion (100 Supcoins)\n");
+        printf("2. Acheter Super Potion (300 Supcoins)\n");
+        printf("3. Acheter Bonbon Rare (700 Supcoins)\n");
+        printf("4. Vendre des items\n");
+        printf("5. Partir du shop\n");
+        printf("Choississez une option: ");
         scanf("%d", &choice);
 
         switch (choice) {
@@ -119,7 +121,7 @@ void shop(Player *player) {
                     player->items[player->itemCount].price = 100;
                     player->items[player->itemCount].effectValue = 5;
                     player->itemCount++;
-                    printf("You bought a Potion!\n");
+                    printf("Tu a acheter une Potion!\n");
                 } else {
                     printf("Not enough Supcoins or inventory full.\n");
                 }
@@ -149,7 +151,7 @@ void shop(Player *player) {
                 }
                 break;
             case 4:
-                // Implement selling items
+                sell(player);
                 break;
             case 5:
                 printf("Thank you for visiting the shop!\n");
@@ -157,9 +159,31 @@ void shop(Player *player) {
             default:
                 printf("Invalid choice. Try again.\n");
         }
-    } while (choice != 5);
+    } while (choice != 5 || choice != 4);
 }
-
+void sell(Player *player){
+    int choice;
+    printf("----------------------------------------");
+    printf("Tu as %d items. qu'elle item voulez vous vendre ?\n", player->itemCount);
+    printf("0. Retour\n");
+    for (int i = 0; i < player->itemCount; i++) {
+        printf("%d. %s\n", i + 1, player->items[i].name);
+    }
+    scanf("%d",&choice);
+    if (choice == 0){
+        shop(player);
+    }
+    else if (choice > 0 && choice <= player->itemCount){
+        player->supcoins += player->items[choice - 1].price;
+        printf("Vous avez vendu %s pour %d Supcoins.\n", player->items[choice - 1].name, player->items[choice - 1].price);
+        for (int i = choice - 1; i < player->itemCount - 1; i++) {
+            player->items[i] = player->items[i + 1];
+        }
+        player->itemCount--;
+    } else {
+        printf("Choix invalide. Essayez encore.\n");
+    }
+};
 
 
 int main() {
