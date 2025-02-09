@@ -266,4 +266,9 @@ int main() {
     // Lancer le menu principal
     mainMenu(&player);
 
+    return 0;<<<<<<< Updated upstream
     return 0;
+=======
+    return 0;
+}
+>>>>>>> Stashed changes
