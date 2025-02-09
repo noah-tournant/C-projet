@@ -4,7 +4,6 @@
 void mainMenu(Player *player) {
     int choice;
     do {
-        printf("----------------------------------------");
         printf("\nBienvenue, %s ! Que voulez-vous faire ?\n", player->name);
         printf("1. Combattre dans la nature\n");
         printf("2. Accéder au magasin\n");
@@ -22,7 +21,7 @@ void mainMenu(Player *player) {
                 shop(player );
                 break;
             case 3:
-                CentreSupemon(player);
+                // Centre Supémon
                 break;
             case 4:
                 saveGame(player);
@@ -36,130 +35,105 @@ void mainMenu(Player *player) {
     } while (choice != 5);
 }
 
-void applyMove(Supemon *attacker, Supemon *defender, Move move) {
-    if (move.damage > 0) {
-        defender->HP -= move.damage;
-        if (defender->HP < 0) defender->HP = 0;
-        printf("%s used %s! It dealt %d damage.\n", attacker->name, move.name, move.damage);
-    } else if (move.buff.value != 0) {
-        if (move.buff.value > 0) {
-            switch (move.buff.statType) {
-                case 1: attacker->attack += move.buff.value; break;
-                case 2: attacker->defense += move.buff.value; break;
-                case 3: attacker->evasion += move.buff.value; break;
-                case 4: attacker->accuracy += move.buff.value; break;
-                case 5: attacker->speed += move.buff.value; break;
-            }
-            printf("%s used %s! It increased its stat by %d.\n", attacker->name, move.name, move.buff.value);
-        } else {
-            switch (move.buff.statType) {
-                case 1: defender->attack += move.buff.value; break;
-                case 2: defender->defense += move.buff.value; break;
-                case 3: defender->evasion += move.buff.value; break;
-                case 4: defender->accuracy += move.buff.value; break;
-                case 5: defender->speed += move.buff.value; break;
-            }
-            printf("%s used %s! It decreased the enemy's stat by %d.\n", attacker->name, move.name, -move.buff.value);
-        }
-    }
-}
 
 void battle(Player *player) {
-    Supemon *playerSupemon = &player->supemons[0];
+    Supemon *playerSupemon = &player->supemons[player->selectedSupemonIndex];
     Supemon enemySupemon;
-    int randomIndex = rand() % player->supemonCount;
-    Supemon *randomSupemon = &player->supemons[randomIndex];
 
-    // Initialize the enemy Supémon with the same level and proportional stats
-    initSupemon(&enemySupemon, randomSupemon->name, playerSupemon->level, 
-                randomSupemon->maxHP,randomSupemon->HP, randomSupemon->attack, randomSupemon->defense, 
-                randomSupemon->evasion, randomSupemon->accuracy, randomSupemon->speed, randomSupemon->moves);
+    // Initialiser un Supémon ennemi avec des statistiques proportionnelles
+    initSupemon(&enemySupemon, "Wild Supemon", playerSupemon->level, playerSupemon->maxHP, playerSupemon->attack, playerSupemon->defense, playerSupemon->evasion, playerSupemon->accuracy, playerSupemon->speed);
 
-    printf("A wild %s appeared!\n", enemySupemon.name);
+    printf("Un %s sauvage apparaît !\n", enemySupemon.name);
 
     while (playerSupemon->HP > 0 && enemySupemon.HP > 0) {
+        // Déterminer qui commence
         int playerTurn = (playerSupemon->speed > enemySupemon.speed) || (playerSupemon->speed == enemySupemon.speed && rand() % 2 == 0);
 
         if (playerTurn) {
+            // Tour du joueur
             int action;
-            printf("Choose an action:\n1. Move\n2. Change Supemon\n3. Use an item\n4. Run away\n5. Capture\n");
+            printf("Choisissez une action :\n1. Attaque\n2. Changer de Supémon\n3. Utiliser un objet\n4. Fuir\n5. Capturer\n");
             scanf("%d", &action);
 
             switch (action) {
-                case 1: {
-                    int moveChoice;
-                    printf("Choose a move:\n1- %s\n2- %s\n3- Cancel\n", playerSupemon->moves[0].name, playerSupemon->moves[1].name);
-                    scanf("%d", &moveChoice);
-
-                    if (moveChoice == 1 || moveChoice == 2) {
-                        applyMove(playerSupemon, &enemySupemon, playerSupemon->moves[moveChoice - 1]);
+                case 1:
+                    // Le joueur choisit une attaque
+                    printf("Choisissez un mouvement :\n");
+                    for (int i = 0; i < MAX_MOVES; i++) {
+                        printf("%d. %s\n", i + 1, playerSupemon->moves[i].name);
+                    }
+                    int moveIndex;
+                    scanf("%d", &moveIndex);
+                    if (moveIndex > 0 && moveIndex <= MAX_MOVES) {
+                        applyMove(playerSupemon, &enemySupemon, playerSupemon->moves[moveIndex - 1]);
                     } else {
-                        printf("Move cancelled.\n");
+                        printf("Mouvement invalide.\n");
                     }
                     break;
-                }
                 case 2:
-                    // Player changes Supemon
-                    break;
+                     // Le joueur change de Supémon
+                     printf("Choisissez un Supémon :\n");
+                     for (int i = 0; i < player->supemonCount; i++) {
+                         printf("%d. %s\n", i + 1, player->supemons[i].name);
+                     }
+                     int supemonIndex;
+                     scanf("%d", &supemonIndex);
+                     if (supemonIndex > 0 && supemonIndex <= player->supemonCount) {
+                         player->selectedSupemonIndex = supemonIndex - 1;
+                         playerSupemon = &player->supemons[player->selectedSupemonIndex];
+                         printf("Vous avez changé pour %s.\n", playerSupemon->name);
+                     } else {
+                         printf("Choix invalide.\n");
+                     }
+                     break;
                 case 3:
-                    // Player uses an item
+                    // Le joueur utilise un objet
                     break;
                 case 4:
-                    // Player tries to run away
+                    {
+                        float runChance = (float)playerSupemon->speed / (playerSupemon->speed + enemySupemon.speed);
+                        if ((float)rand() / RAND_MAX < runChance) {
+                            printf("Vous avez réussi à fuir !\n");
+                            return; // Terminer le combat
+                        } else {
+                            printf("La fuite a échoué !\n");
+                        }
+                    }
                     break;
                 case 5:
-                    // Player tries to capture the enemy Supemon
+                    // Le joueur essaie de capturer le Supémon ennemi
+                    captureSupemon(player, &enemySupemon);
                     break;
                 default:
-                    printf("Invalid action. Try again.\n");
+                    printf("Action invalide. Réessayez.\n");
             }
         } else {
+            // Tour de l'ennemi
             int moveIndex = rand() % MAX_MOVES;
             Move enemyMove = enemySupemon.moves[moveIndex];
+            printf("L'ennemi %s utilise %s !\n", enemySupemon.name, enemyMove.name);
             applyMove(&enemySupemon, playerSupemon, enemyMove);
         }
     }
 
     if (playerSupemon->HP <= 0) {
-        printf("Your Supemon fainted!\n");
+        printf("Votre Supémon est KO !\n");
     } else {
-        printf("You defeated the wild %s!\n", enemySupemon.name);
-        // Reward player
-    }
-}
-
-void CentreSupemon(Player *player) {
-    int choice;
-    printf("----------------------------------------\n");
-    printf("Bienvenue au Centre Supémon !\n");
-    printf("Voici vos Supémons :\n");
-    for (int i = 0; i < player->supemonCount; i++) {
-        printf("%d. %s (HP: %d/%d)\n", i + 1, player->supemons[i].name, player->supemons[i].HP, player->supemons[i].maxHP);
-    }
-    printf("Voulez-vous soigner tous vos Supémons ? (1: Oui, 2: Non) : ");
-    scanf("%d", &choice);
-
-    if (choice == 1) {
-        for (int i = 0; i < player->supemonCount; i++) {
-            player->supemons[i].HP = player->supemons[i].maxHP;
-        }
-        printf("Tous vos Supémons ont été soignés !\n");
-    } else {
-        printf("Vos Supémons n'ont pas été soignés.\n");
+        printf("Vous avez vaincu le %s sauvage !\n", enemySupemon.name);
+        // Récompenser le joueur
     }
 }
 
 void shop(Player *player) {
     int choice;
     do {
-        printf("----------------------------------------\n");
-        printf("Bienvenue dans la boutique, vous avez %d Supcoins.\n", player->supcoins);
-        printf("1. Acheter Potion (100 Supcoins)\n");
-        printf("2. Acheter Super Potion (300 Supcoins)\n");
-        printf("3. Acheter Bonbon Rare (700 Supcoins)\n");
-        printf("4. Vendre des items\n");
-        printf("5. Partir du shop\n");
-        printf("Choississez une option: ");
+        printf("Welcome to the shop! You have %d Supcoins.\n", player->supcoins);
+        printf("1. Buy Potion (100 Supcoins)\n");
+        printf("2. Buy Super Potion (300 Supcoins)\n");
+        printf("3. Buy Rare Candy (700 Supcoins)\n");
+        printf("4. Sell items\n");
+        printf("5. Exit shop\n");
+        printf("Choose an option: ");
         scanf("%d", &choice);
 
         switch (choice) {
@@ -170,7 +144,7 @@ void shop(Player *player) {
                     player->items[player->itemCount].price = 100;
                     player->items[player->itemCount].effectValue = 5;
                     player->itemCount++;
-                    printf("Tu a acheter une Potion!\n");
+                    printf("You bought a Potion!\n");
                 } else {
                     printf("Not enough Supcoins or inventory full.\n");
                 }
@@ -200,7 +174,7 @@ void shop(Player *player) {
                 }
                 break;
             case 4:
-                sell(player);
+                // Implement selling items
                 break;
             case 5:
                 printf("Thank you for visiting the shop!\n");
@@ -208,36 +182,14 @@ void shop(Player *player) {
             default:
                 printf("Invalid choice. Try again.\n");
         }
-    } while (choice != 5 || choice != 4);
+    } while (choice != 5);
 }
-void sell(Player *player){
-    int choice;
-    printf("----------------------------------------");
-    printf("Tu as %d items. qu'elle item voulez vous vendre ?\n", player->itemCount);
-    printf("0. Retour\n");
-    for (int i = 0; i < player->itemCount; i++) {
-        printf("%d. %s\n", i + 1, player->items[i].name);
-    }
-    scanf("%d",&choice);
-    if (choice == 0){
-        shop(player);
-    }
-    else if (choice > 0 && choice <= player->itemCount){
-        player->supcoins += player->items[choice - 1].price;
-        printf("Vous avez vendu %s pour %d Supcoins.\n", player->items[choice - 1].name, player->items[choice - 1].price);
-        for (int i = choice - 1; i < player->itemCount - 1; i++) {
-            player->items[i] = player->items[i + 1];
-        }
-        player->itemCount--;
-    } else {
-        printf("Choix invalide. Essayez encore.\n");
-    }
-};
+
 
 
 int main() {
     Player player;
-    printf("Votre prénom\n");
+    printf("Votre prénom: ");
     scanf("%49s", player.name);
     initPlayer(&player, player.name);
 
@@ -280,55 +232,41 @@ int main() {
         {"éclair", 2, {-1, 2}},
         {"charge", 1, {0, 0}},
     };
+
     Supemon supmander;
-    initSupemon(&supmander, "Supmander", 1, 10,10, 1, 1, 1, 2, 1, supmanderMoves);
-   
+    initSupemon(&supmander, "Supmander", 1, 10, 10, 2, 2, 3, 2, 2, supmanderMoves);
+    addSupemon(&player, supmander);
+
     Supemon supasaur;
-    initSupemon(&supasaur, "Supasaur", 1, 9,9, 1, 1, 3, 2, 2, supasaurMoves);
-   
+    initSupemon(&supasaur, "Supasaur", 1, 9, 9, 1, 1, 3, 2, 2, supasaurMoves);
+    addSupemon(&player, supasaur);
+
     Supemon supirtle;
-    initSupemon(&supirtle, "Supirtle", 1, 11,11, 1, 2, 2, 1, 2, supirtleMoves);
+    initSupemon(&supirtle, "Supirtle", 1, 11, 11, 1, 2, 2, 1, 2, supirtleMoves);
+    addSupemon(&player, supirtle);
 
     Supemon mewtoo;
-    initSupemon(&mewtoo, "Mewtoo", 1, 20,20, 3, 3, 3, 2, 3, mewtooMoves);
-    addSupemonsauvage(mewtoo);
+    initSupemon(&mewtoo, "Mewtoo", 1, 20, 20, 3, 3, 3, 2, 3, mewtooMoves);
+    addSupemon(&player, mewtoo);
 
     Supemon pikachu;
-    initSupemon(&pikachu, "Pikachu", 1, 8,8, 1, 1, 3, 2, 3, pikachuMoves);
-    addSupemonsauvage(pikachu);
+    initSupemon(&pikachu, "Pikachu", 1, 8, 8, 1, 1, 3, 2, 3, pikachuMoves);
+    addSupemon(&player, pikachu);
 
     Supemon evoli;
-    initSupemon(&evoli, "Evoli", 1, 9,9, 1, 1, 2, 2, 2, evoliMoves);
-    addSupemonsauvage(evoli);
+    initSupemon(&evoli, "Evoli", 1, 9, 9, 1, 1, 2, 2, 2, evoliMoves);
+    addSupemon(&player, evoli);
 
     Supemon tiplouf;
-    initSupemon(&tiplouf, "Tiplouf", 1, 8,8, 2, 2, 2, 2, 2, tiploufMoves);
-    addSupemonsauvage(tiplouf);
+    initSupemon(&tiplouf, "Tiplouf", 1, 8, 8, 2, 2, 2, 2, 2, tiploufMoves);
+    addSupemon(&player, tiplouf);
 
     Supemon voltorbe;
-    initSupemon(&voltorbe, "Voltorbe", 1,7,7, 1, 1, 1, 1, 1, voltorbeMoves);
-    addSupemonsauvage(voltorbe);
+    initSupemon(&voltorbe, "Voltorbe", 1, 7, 7, 1, 1, 1, 1, 1, voltorbeMoves);
+    addSupemon(&player, voltorbe);
 
-    printf("choissiez entre 1:Supmander, 2:Supasaur et 3:Supirtle\n");
-    scanf("%d", &player.selectedSupemonIndex);
-    if (player.selectedSupemonIndex == 1){
-        printf("vous avez choisi Supmander\n");
-        addSupemon(&player, supmander);
-    }
-    else if (player.selectedSupemonIndex == 2){
-        printf("vous avez choisi Supasaur\n");
-        addSupemon(&player, supasaur);
-    }
-    else if (player.selectedSupemonIndex == 3){
-        printf("vous avez choisi Supirtle\n");
-        addSupemon(&player, supirtle);
-    }
-    else{
-        printf("choix invalide\n");
-    }
     // Lancer le menu principal
     mainMenu(&player);
-
 
     return 0;
 }
