@@ -13,6 +13,7 @@
 // Définir une structure pour les objets
 typedef struct {
     char name[50];
+    int price;
     int effectValue; // Par exemple, pour les potions : combien de HP ils ajoutent
 } Item;
 

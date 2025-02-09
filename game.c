@@ -23,6 +23,17 @@ void addSupemon(Player *player, Supemon supemon) {
     }
 }
 
+Supemon supemonsSauvages[MAX_SUPEMON];
+int supemonsSauvagesCount = 0;
+
+void addSupemonsauvage(Supemon supemon) {
+    if (supemonsSauvagesCount < MAX_SUPEMON) {
+        supemonsSauvages[supemonsSauvagesCount++] = supemon;
+    } else {
+        printf("La liste des Supémons sauvages est pleine.\n");
+    }
+}
+
 void initPlayer(Player *player, const char *name) {
     strcpy(player->name, name);
     player->supcoins = 1000;
