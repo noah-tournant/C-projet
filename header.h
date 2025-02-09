@@ -6,19 +6,28 @@
 #include <string.h>
 
 #define MAX_SUPEMON 10
-#define MAX_MOVES 4
+#define MAX_MOVES 2
 #define MAX_ITEMS 10
 
 
+// Définir une structure pour les objets
+typedef struct {
+    char name[50];
+    int effectValue; // Par exemple, pour les potions : combien de HP ils ajoutent
+} Item;
+
 // Définir une structure pour les mouvements
 typedef struct {
-    char name[20];
+    char name[50];
     int damage;
-    int statChange;
+    struct {
+        int value;
+        int statType; // 1:atk, 2:def, 3:evasion, 4:accuracy, 5:speed
+    } buff;
 } Move;
 
 typedef struct {
-    char name[20];
+    char name[50];
     int level;
     int experience;
     int maxHP;
@@ -30,13 +39,6 @@ typedef struct {
     int speed;
     Move moves[MAX_MOVES];
 } Supemon;
-
-// Définir une structure pour les objets
-typedef struct {
-    char name[20];
-    int price;
-    int effectValue; // Par exemple, pour les potions : combien de HP ils ajoutent
-} Item;
 
 // Définir une structure pour le joueur
 typedef struct {
@@ -59,6 +61,9 @@ void attack(Supemon *attacker, Supemon *defender);
 void saveGame(Player *player);
 void loadGame(Player *player);
 void mainMenu(Player *player);
+void battle(Player *player);
+void shop(Player *player);
+void applyMove(Supemon *attacker, Supemon *defender, Move move);
 void battle(Player *player);
 void shop(Player *player);
 void addSupemonsauvage(Supemon supemon);

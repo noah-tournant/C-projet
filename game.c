@@ -4,7 +4,6 @@
 
 void initSupemon(Supemon *supemon, const char *name, int level, int maxHP,int hp, int attack, int defense, int evasion, int accuracy, int speed, Move moves[MAX_MOVES]) {
     supemon->level = level;
-    supemon->experience = 0;
     supemon->maxHP = maxHP;
     supemon->HP = hp;
     supemon->attack = attack;
@@ -12,39 +11,24 @@ void initSupemon(Supemon *supemon, const char *name, int level, int maxHP,int hp
     supemon->evasion = evasion;
     supemon->accuracy = accuracy;
     supemon->speed = speed;
+    supemon->experience = 0; // Initialiser l'expérience à 0
     for (int i = 0; i < MAX_MOVES; i++) {
         supemon->moves[i] = moves[i];
     }
 }
 
-void initPlayer(Player *player, const char *name) {
-    strcpy(player->name, name);
-    player->supcoins = 500; 
-    player->supemonCount = 0;
-    player->itemCount = 0;
-}
-
 void addSupemon(Player *player, Supemon supemon) {
     if (player->supemonCount < MAX_SUPEMON) {
-        player->supemons[player->supemonCount] = supemon;
-        player->supemonCount++;
-    } else {
-        printf("Vous ne pouvez pas avoir plus de Supémons.\n");
+        player->supemons[player->supemonCount++] = supemon;
     }
 }
 
-
-Supemon wildSupemons[10];  // Tableau de Supémons sauvages
-int wildSupemonCount = 0;  // Compteur pour suivre le nombre de Supémons sauvages
-
-// Fonction pour ajouter un Supemon à la liste des Supémons sauvages
-void addSupemonsauvage(Supemon supemon) {
-    if (wildSupemonCount < 10) {
-        wildSupemons[wildSupemonCount] = supemon;  // Ajouter le Supemon à la liste
-        wildSupemonCount++;  // Incrémenter le compteur
-    } else {
-        printf("La liste des Supémons sauvages est pleine !\n");
-    }
+void initPlayer(Player *player, const char *name) {
+    strcpy(player->name, name);
+    player->supcoins = 1000;
+    player->supemonCount = 0;
+    player->itemCount = 0;
+    player->selectedSupemonIndex = 0;
 }
 
 void displaySupemon(Supemon *supemon) {

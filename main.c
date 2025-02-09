@@ -36,12 +36,38 @@ void mainMenu(Player *player) {
     } while (choice != 5);
 }
 
-void battle(Player *player) {
-    Supemon *playerSupemon = &player->supemons[player->selectedSupemonIndex];
-    Supemon enemySupemon;
+void applyMove(Supemon *attacker, Supemon *defender, Move move) {
+    if (move.damage > 0) {
+        defender->HP -= move.damage;
+        if (defender->HP < 0) defender->HP = 0;
+        printf("%s used %s! It dealt %d damage.\n", attacker->name, move.name, move.damage);
+    } else if (move.buff.value != 0) {
+        if (move.buff.value > 0) {
+            switch (move.buff.statType) {
+                case 1: attacker->attack += move.buff.value; break;
+                case 2: attacker->defense += move.buff.value; break;
+                case 3: attacker->evasion += move.buff.value; break;
+                case 4: attacker->accuracy += move.buff.value; break;
+                case 5: attacker->speed += move.buff.value; break;
+            }
+            printf("%s used %s! It increased its stat by %d.\n", attacker->name, move.name, move.buff.value);
+        } else {
+            switch (move.buff.statType) {
+                case 1: defender->attack += move.buff.value; break;
+                case 2: defender->defense += move.buff.value; break;
+                case 3: defender->evasion += move.buff.value; break;
+                case 4: defender->accuracy += move.buff.value; break;
+                case 5: defender->speed += move.buff.value; break;
+            }
+            printf("%s used %s! It decreased the enemy's stat by %d.\n", attacker->name, move.name, -move.buff.value);
+        }
+    }
+}
 
-    // Select a random Supémon from the player's list to base the enemy Supémon on
-    int randomIndex = rand() % MAX_SUPEMON;
+void battle(Player *player) {
+    Supemon *playerSupemon = &player->supemons[0];
+    Supemon enemySupemon;
+    int randomIndex = rand() % player->supemonCount;
     Supemon *randomSupemon = &player->supemons[randomIndex];
 
     // Initialize the enemy Supémon with the same level and proportional stats
@@ -52,20 +78,26 @@ void battle(Player *player) {
     printf("A wild %s appeared!\n", enemySupemon.name);
 
     while (playerSupemon->HP > 0 && enemySupemon.HP > 0) {
-        // Determine who goes first
-        int playerTurn = (playerSupemon->speed > enemySupemon.speed) || 
-                         (playerSupemon->speed == enemySupemon.speed && rand() % 2 == 0);
+        int playerTurn = (playerSupemon->speed > enemySupemon.speed) || (playerSupemon->speed == enemySupemon.speed && rand() % 2 == 0);
 
         if (playerTurn) {
-            // Player's turn
             int action;
             printf("Choose an action:\n1. Move\n2. Change Supemon\n3. Use an item\n4. Run away\n5. Capture\n");
             scanf("%d", &action);
 
             switch (action) {
-                case 1:
-                    // Player chooses a move
+                case 1: {
+                    int moveChoice;
+                    printf("Choose a move:\n1- %s\n2- %s\n3- Cancel\n", playerSupemon->moves[0].name, playerSupemon->moves[1].name);
+                    scanf("%d", &moveChoice);
+
+                    if (moveChoice == 1 || moveChoice == 2) {
+                        applyMove(playerSupemon, &enemySupemon, playerSupemon->moves[moveChoice - 1]);
+                    } else {
+                        printf("Move cancelled.\n");
+                    }
                     break;
+                }
                 case 2:
                     // Player changes Supemon
                     break;
@@ -82,14 +114,11 @@ void battle(Player *player) {
                     printf("Invalid action. Try again.\n");
             }
         } else {
-            // Enemy's turn
             int moveIndex = rand() % MAX_MOVES;
             Move enemyMove = enemySupemon.moves[moveIndex];
-            printf("Enemy %s uses %s!\n", enemySupemon.name, enemyMove.name);
-            // Apply move effects
+            applyMove(&enemySupemon, playerSupemon, enemyMove);
         }
     }
-
 
     if (playerSupemon->HP <= 0) {
         printf("Your Supemon fainted!\n");
@@ -213,62 +242,43 @@ int main() {
     initPlayer(&player, player.name);
 
     Move supmanderMoves[MAX_MOVES] = {
-        {"cri", 0, 1},
-        {"griffe", 2, 0},
-        {"", 0, 0},
-        {"", 0, 0},
+        {"cri", 0, {1, 1}},
+        {"griffe", 2, {0, 0}},
     };
 
     Move supasaurMoves[MAX_MOVES] = {
-        {"liane gigoteuse", 2, 0},
-        {"planification", 0, 1},
-        {"", 0, 0},
-        {"", 0, 0},
+        {"liane gigoteuse", 2, {0, 0}},
+        {"planification", 0, {1, 4}},
     };
 
-    // Define moves for Supirtle
     Move supirtleMoves[MAX_MOVES] = {
-        {"pistolet à O", 2, 0},
-        {"armure", 0, 1},
-        {"", 0, 0},
-        {"", 0, 0},
-      
+        {"pistolet à O", 2, {0, 0}},
+        {"armure", 0, {1, 2}},
     };
+
     Move mewtooMoves[MAX_MOVES] = {
-        {"balles ombres", 3, 0},
-        {"flex", 0, 2},
-        {"", 0, 0},
-        {"", 0, 0}
+        {"balles ombres", 3, {0, 0}},
+        {"flex", 0, {2, 1}},
     };
+
     Move pikachuMoves[MAX_MOVES] = {
-        {"vive attaque", 2, 0},
-        {"mimi queue", 0, 1},
-        {"", 0, 0},
-        {"", 0, 0}
+        {"vive attaque", 2, {0, 0}},
+        {"mimi queue", 0, {1, 2}},
     };
 
-    // Define moves for Evoli
     Move evoliMoves[MAX_MOVES] = {
-        {"charge", 2, 0},
-        {"rugissement", 0, 1},
-        {"", 0, 0},
-        {"", 0, 0}
+        {"charge", 2, {0, 0}},
+        {"rugissement", 0, {1, 1}},
     };
 
-    // Define moves for Tiplouf
     Move tiploufMoves[MAX_MOVES] = {
-        {"ecume", 2, 0},
-        {"bulle d'O", 3, 0},
-        {"", 0, 0},
-        {"", 0, 0}
+        {"bubulle", 2, {-1, 5}},
+        {"mimi queue", 0, {1, 2}},
     };
 
-    // Define moves for Voltorbe
     Move voltorbeMoves[MAX_MOVES] = {
-        {"etincelle", 2, 0},
-        {"charge", 1, 0},
-        {"", 0, 0},
-        {"", 0, 0}
+        {"éclair", 2, {-1, 2}},
+        {"charge", 1, {0, 0}},
     };
     Supemon supmander;
     initSupemon(&supmander, "Supmander", 1, 10,10, 1, 1, 1, 2, 1, supmanderMoves);
@@ -318,6 +328,7 @@ int main() {
     }
     // Lancer le menu principal
     mainMenu(&player);
+
 
     return 0;
 }
