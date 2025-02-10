@@ -1,5 +1,6 @@
 #include "header.h"
 
+// Définition globale de supemonsSauvages et supemonsSauvagesCount
 Supemon supemonsSauvages[MAX_SUPEMON];
 int supemonsSauvagesCount = 0;
 

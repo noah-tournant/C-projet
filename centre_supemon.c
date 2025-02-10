@@ -1,22 +1,24 @@
 #include "header.h"
 
+
 void CentreSupemon(Player *player) {
     int choice;
-    printf("----------------------------------------\n");
-    printf("Bienvenue au Centre Supémon !\n");
-    printf("Voici vos Supémons :\n");
+    printf(BOLD "----------------------------------------\n" RESET);
+    printf(BOLD MAGENTA "Bienvenue au Centre Supémon !\n" RESET);
+    printf(BOLD "----------------------------------------\n" RESET);
+    printf(CYAN "Voici vos Supémons :\n" RESET);
     for (int i = 0; i < player->supemonCount; i++) {
-        printf("%d. %s (HP: %d/%d)\n", i + 1, player->supemons[i].name, player->supemons[i].HP, player->supemons[i].maxHP);
+        printf(GREEN "%d. %s (HP: %d/%d)\n" RESET, i + 1, player->supemons[i].name, player->supemons[i].HP, player->supemons[i].maxHP);
     }
-    printf("Voulez-vous soigner tous vos Supémons ? (1: Oui, 2: Non) : ");
+    printf(YELLOW "Voulez-vous soigner tous vos Supémons ? (1: Oui, 2: Non) : " RESET);
     scanf("%d", &choice);
 
     if (choice == 1) {
         for (int i = 0; i < player->supemonCount; i++) {
             player->supemons[i].HP = player->supemons[i].maxHP;
         }
-        printf("Tous vos Supémons ont été soignés !\n");
+        printf(GREEN "Tous vos Supémons ont été soignés !\n" RESET);
     } else {
-        printf("Vos Supémons n'ont pas été soignés.\n");
+        printf(RED "Vos Supémons n'ont pas été soignés.\n" RESET);
     }
 }

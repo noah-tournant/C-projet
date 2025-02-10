@@ -51,15 +51,12 @@ int main() {
 
     Supemon supmander;
     initSupemon(&supmander, "Supmander", 1, 10, 10, 2, 2, 3, 2, 2, supmanderMoves);
-    addSupemon(&player, supmander);
 
     Supemon supasaur;
     initSupemon(&supasaur, "Supasaur", 1, 9, 9, 1, 1, 3, 2, 2, supasaurMoves);
-    addSupemon(&player, supasaur);
 
     Supemon supirtle;
     initSupemon(&supirtle, "Supirtle", 1, 11, 11, 1, 2, 2, 1, 2, supirtleMoves);
-    addSupemon(&player, supirtle);
 
     Supemon mewtoo;
     initSupemon(&mewtoo, "Mewtoo", 1, 20, 20, 3, 3, 3, 2, 3, mewtooMoves);
@@ -81,19 +78,19 @@ int main() {
     initSupemon(&voltorbe, "Voltorbe", 1, 7, 7, 1, 1, 1, 1, 1, voltorbeMoves);
     addSupemonsauvage(voltorbe);
 
-    printf("choissiez entre 1:Supmander, 2:Supasaur et 3:Supirtle\n");
+    printf("Choisissez entre 1:Supmander, 2:Supasaur et 3:Supirtle\n");
     scanf("%d", &player.selectedSupemonIndex);
     if (player.selectedSupemonIndex == 1) {
-        printf("vous avez choisi Supmander\n");
+        printf("Vous avez choisi Supmander\n");
         addSupemon(&player, supmander);
     } else if (player.selectedSupemonIndex == 2) {
-        printf("vous avez choisi Supasaur\n");
+        printf("Vous avez choisi Supasaur\n");
         addSupemon(&player, supasaur);
     } else if (player.selectedSupemonIndex == 3) {
-        printf("vous avez choisi Supirtle\n");
+        printf("Vous avez choisi Supirtle\n");
         addSupemon(&player, supirtle);
     } else {
-        printf("choix invalide\n");
+        printf("Choix invalide\n");
     }
     // Lancer le menu principal
     mainMenu(&player);
@@ -103,13 +100,14 @@ int main() {
 
 void mainMenu(Player *player) {
     int choice;
+    printf("\n" BOLD "Bienvenue, %s ! Que voulez-vous faire ?\n" RESET, player->name);
     do {
-        printf("\nBienvenue, %s ! Que voulez-vous faire ?\n", player->name);
-        printf("1. Combattre dans la nature\n");
-        printf("2. Accéder au magasin\n");
-        printf("3. Centre Supémon\n");
-        printf("4. Sauvegarder le jeu\n");
-        printf("5. Quitter\n");
+        printf(BOLD "\nMenu Principal\n" RESET);
+        printf(GREEN "1. Combattre dans la nature\n" RESET);
+        printf(YELLOW "2. Accéder au magasin\n" RESET);
+        printf(CYAN "3. Centre Supémon\n" RESET);
+        printf(MAGENTA "4. Sauvegarder le jeu\n" RESET);
+        printf(RED "5. Quitter\n" RESET);
         printf("Choisissez une option : ");
         scanf("%d", &choice);
 
@@ -130,7 +128,7 @@ void mainMenu(Player *player) {
                 printf("Au revoir !\n");
                 break;
             default:
-                printf("Choix invalide. Essayez encore.\n");
+                printf(RED "Choix invalide. Essayez encore.\n" RESET);
         }
     } while (choice != 5);
 }
