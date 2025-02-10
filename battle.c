@@ -8,7 +8,13 @@ void applyMove(Supemon *attacker, Supemon *defender, Move move) {
         // Attaque réussie
         if (move.damage > 0) {
             // Calculer les dégâts
-            int damage = (attacker->attack * move.damage) / defender-> defense> 0 ? (attacker->attack * move.damage) / defender-> defense : 1;
+            int damage = 1; // Default damage
+            if (defender->defense > 0) {
+                damage = (attacker->attack * move.damage) / defender->defense;
+                if (damage <= 0) {
+                    damage = 1; // Ensure at least 1 damage
+                }
+            }
             if (rand() % 2 == 0) {
                 damage = (damage + 1) / 2; // Arrondir vers le haut
             } else {
@@ -63,21 +69,23 @@ void captureSupemon(Player *player, Supemon *enemySupemon) {
 }
 
 void battle(Player *player) {
-    Supemon *playerSupemon = &player->supemons[player->selectedSupemonIndex];
+    Supemon *playerSupemon = NULL;
+    player->selectedSupemonIndex = 0; // Sélectionner le premier Supémon par défaut
+    if (player->selectedSupemonIndex < 0 || player->selectedSupemonIndex >= player->supemonCount) {
+        printf(RED "Erreur: Supémon sélectionné invalide.\n" RESET);
+        return;
+    }
+    playerSupemon = &player->supemons[player->selectedSupemonIndex];
     Supemon enemySupemon;
 
     // Sélectionner un Supémon sauvage au hasard
     int randomIndex = rand() % supemonsSauvagesCount;
     enemySupemon = supemonsSauvages[randomIndex];
 
-    printf(GREEN "Un %s sauvage apparaît !\n" RESET, enemySupemon.name);
-
     // Déterminer qui commence
-    int playerTurn = (playerSupemon->speed > enemySupemon.speed);
-
-    while (player->supemons[0].HP > 0 && enemySupemon.HP > 0) {
+    int playerTurn = (playerSupemon->speed > enemySupemon.speed) ? 1 : 0;
         
-
+    while (playerSupemon->HP > 0 && enemySupemon.HP > 0) {
         if (playerTurn) {
             // Tour du joueur
             int action;
@@ -90,7 +98,11 @@ void battle(Player *player) {
                     // Le joueur choisit une attaque
                     printf(CYAN "Choisissez un mouvement :\n" RESET);
                     for (int i = 0; i < MAX_MOVES; i++) {
-                        printf(RED"%d. %s\n", i + 1, playerSupemon->moves[i].name);
+                        if (playerSupemon->moves[i].name[0] != '\0') {
+                            printf(RED"%d. %s\n" RESET, i + 1, playerSupemon->moves[i].name);
+                        } else {
+                            printf(RED"%d. (Aucun mouvement)\n" RESET, i + 1);
+                        }
                     }
                     int moveIndex;
                     scanf("%d", &moveIndex);
