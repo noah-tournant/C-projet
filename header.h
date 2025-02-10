@@ -70,5 +70,6 @@ void shop(Player *player);
 void addSupemonsauvage(Supemon supemon);
 void sell(Player *player);
 void CentreSupemon(Player *player);
-
+void captureSupemon(Player *player, Supemon *enemySupemon);
+void sellItems(Player *player);
 #endif // HEADER_H
