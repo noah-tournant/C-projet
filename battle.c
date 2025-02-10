@@ -8,7 +8,7 @@ void applyMove(Supemon *attacker, Supemon *defender, Move move) {
         // Attaque réussie
         if (move.damage > 0) {
             // Calculer les dégâts
-            int damage = (attacker->attack * move.damage) / defender-> defense;
+            int damage = (attacker->attack * move.damage) / defender-> defense> 0 ? (attacker->attack * move.damage) / defender-> defense : 1;
             if (rand() % 2 == 0) {
                 damage = (damage + 1) / 2; // Arrondir vers le haut
             } else {
