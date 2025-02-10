@@ -86,6 +86,8 @@ void battle(Player *player) {
     int playerTurn = (playerSupemon->speed > enemySupemon.speed) ? 1 : 0;
         
     while (playerSupemon->HP > 0 && enemySupemon.HP > 0) {
+        printf(CYAN "PV de %s: %d\n" RESET, playerSupemon->name, playerSupemon->HP);
+        printf(RED "PV de l'ennemi %s: %d\n" RESET, enemySupemon.name, enemySupemon.HP);
         if (playerTurn) {
             // Tour du joueur
             int action;
