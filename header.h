@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+
 #define RESET "\033[0m"
 #define BOLD "\033[1m"
 #define RED "\033[31m"
@@ -16,7 +18,7 @@
 
 // Déclarations des constantes
 #define MAX_SUPEMON 100
-#define MAX_MOVES 4
+#define MAX_MOVES 2
 #define MAX_ITEMS 10
 
 // Déclarations des structures

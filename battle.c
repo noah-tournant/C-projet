@@ -16,7 +16,7 @@ void applyMove(Supemon *attacker, Supemon *defender, Move move) {
             }
             defender->HP -= damage;
             if (defender->HP < 0) defender->HP = 0;
-            printf(GREEN "%s utilise %s et inflige %d dégâts à %s.\n" RESET, attacker->name, move.name, damage, defender->name);
+            printf(CYAN "%s utilise %s et "RED"inflige %d dégâts à "CYAN"%s.\n" RESET, attacker->name, move.name, damage, defender->name);
         }
         if (move.buff.value != 0) {
             // Appliquer les effets de buff/debuff
@@ -28,7 +28,7 @@ void applyMove(Supemon *attacker, Supemon *defender, Move move) {
                     case 4: attacker->accuracy += move.buff.value; break;
                     case 5: attacker->speed += move.buff.value; break;
                 }
-                printf(BLUE "%s utilise %s et augmente sa statistique de %d.\n" RESET, attacker->name, move.name, move.buff.value);
+                printf(CYAN "%s utilise %s et "GREEN"augmente sa statistique de %d.\n" RESET, attacker->name, move.name, move.buff.value);
             } else {
                 switch (move.buff.statType) {
                     case 1: defender->attack += move.buff.value; break;
@@ -37,12 +37,12 @@ void applyMove(Supemon *attacker, Supemon *defender, Move move) {
                     case 4: defender->accuracy += move.buff.value; break;
                     case 5: defender->speed += move.buff.value; break;
                 }
-                printf(RED "%s utilise %s et diminue la statistique de %d de %s.\n" RESET, attacker->name, move.name, -move.buff.value, defender->name);
+                printf(CYAN "%s utilise %s et"BLUE"diminue la statistique de %d de %s.\n" RESET, attacker->name, move.name, -move.buff.value, defender->name);
             }
         }
     } else {
         // Attaque ratée
-        printf(YELLOW "%s a raté son attaque !\n" RESET, attacker->name);
+        printf(MAGENTA "%s a raté son attaque !\n" RESET, attacker->name);
     }
 }
 
@@ -70,7 +70,7 @@ void battle(Player *player) {
     int randomIndex = rand() % supemonsSauvagesCount;
     enemySupemon = supemonsSauvages[randomIndex];
 
-    printf(MAGENTA "Un %s sauvage apparaît !\n" RESET, enemySupemon.name);
+    printf(GREEN "Un %s sauvage apparaît !\n" RESET, enemySupemon.name);
 
     // Déterminer qui commence
     int playerTurn = (playerSupemon->speed > enemySupemon.speed);
@@ -81,7 +81,7 @@ void battle(Player *player) {
         if (playerTurn) {
             // Tour du joueur
             int action;
-            printf(CYAN "Choisissez une action :\n1. Attaque\n2. Changer de Supémon\n3. Utiliser un objet\n4. Fuir\n5. Capturer\n" RESET);
+            printf(CYAN "Choisissez une action :\n"RED"1. Attaque\n"BLUE"2. Changer de Supémon\n"CYAN"3. Utiliser un objet\n"YELLOW"4. Fuir\n"GREEN"5. Capturer\n\n" RESET);
             scanf("%d", &action);
             playerTurn = 0; // Passer le tour à l'ennemi
 
@@ -90,7 +90,7 @@ void battle(Player *player) {
                     // Le joueur choisit une attaque
                     printf(CYAN "Choisissez un mouvement :\n" RESET);
                     for (int i = 0; i < MAX_MOVES; i++) {
-                        printf("%d. %s\n", i + 1, playerSupemon->moves[i].name);
+                        printf(RED"%d. %s\n", i + 1, playerSupemon->moves[i].name);
                     }
                     int moveIndex;
                     scanf("%d", &moveIndex);
@@ -104,14 +104,14 @@ void battle(Player *player) {
                     // Le joueur change de Supémon
                     printf(CYAN "Choisissez un Supémon :\n" RESET);
                     for (int i = 0; i < player->supemonCount; i++) {
-                        printf("%d. %s\n", i + 1, player->supemons[i].name);
+                        printf(BLUE"%d. %s\n", i + 1, player->supemons[i].name);
                     }
                     int supemonIndex;
                     scanf("%d", &supemonIndex);
                     if (supemonIndex > 0 && supemonIndex <= player->supemonCount) {
                         player->selectedSupemonIndex = supemonIndex - 1;
                         playerSupemon = &player->supemons[player->selectedSupemonIndex];
-                        printf(GREEN "Vous avez changé pour %s.\n" RESET, playerSupemon->name);
+                        printf(GREEN "Vous avez changé pour"BLUE" %s.\n" RESET, playerSupemon->name);
                     } else {
                         printf(RED "Choix invalide.\n" RESET);
                     }

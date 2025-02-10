@@ -11,7 +11,7 @@ void CentreSupemon(Player *player) {
     }
     printf(YELLOW "Voulez-vous soigner tous vos Supémons ? (1: Oui, 2: Non) : " RESET);
     scanf("%d", &choice);
-
+    system("clear");
     if (choice == 1) {
         for (int i = 0; i < player->supemonCount; i++) {
             player->supemons[i].HP = player->supemons[i].maxHP;

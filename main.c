@@ -5,7 +5,7 @@ extern int supemonsSauvagesCount;
 
 int main() {
     Player player;
-    printf("Votre prénom: ");
+    printf(BOLD MAGENTA"Votre prénom: ");
     scanf("%49s", player.name);
     initPlayer(&player, player.name);
 
@@ -75,20 +75,20 @@ int main() {
     initSupemon(&voltorbe, "Voltorbe", 1, 7, 7, 1, 1, 1, 1, 1, voltorbeMoves);
     addSupemonsauvage(voltorbe);
 
-    printf("Choisissez entre 1:Supmander, 2:Supasaur et 3:Supirtle\n");
+    printf(BOLD CYAN"Choisissez entre "RED"1:Supmander,"BLUE" 2:Supasaur "CYAN" et "GREEN" 3:Supirtle\n"RESET);
     scanf("%d", &player.selectedSupemonIndex);
     if (player.selectedSupemonIndex == 1) {
-        printf("Vous avez choisi Supmander\n");
+        printf(RED"Vous avez choisi Supmander\n");
             
         Supemon supmander;
         initSupemon(&supmander, "Supmander", 1, 10, 10, 2, 2, 3, 2, 2, supmanderMoves);
 
         addSupemon(&player, supmander);
     } else if (player.selectedSupemonIndex == 2) {
-        printf("Vous avez choisi Supasaur\n");
+        printf(BLUE"Vous avez choisi Supasaur\n");
         addSupemon(&player, supasaur);
             } else if (player.selectedSupemonIndex == 3) {
-        printf("Vous avez choisi Supirtle\n");
+        printf(GREEN"Vous avez choisi Supirtle\n");
         addSupemon(&player, supirtle);
             } else {
         printf("Choix invalide\n");
@@ -101,7 +101,7 @@ int main() {
 
 void mainMenu(Player *player) {
     int choice;
-    printf("\n" BOLD "Bienvenue, %s ! Que voulez-vous faire ?\n" RESET, player->name);
+    printf("\n" BOLD CYAN "Bienvenue, %s ! Que voulez-vous faire ?\n" RESET, player->name);
     do {
         printf(BOLD "\n----------------------------------------\n" RESET);
         printf(BOLD MAGENTA "\nMenu Principal\n" RESET);
@@ -111,8 +111,10 @@ void mainMenu(Player *player) {
         printf(MAGENTA "3. Centre Supémon\n" RESET);
         printf(CYAN "4. Sauvegarder le jeu\n" RESET);
         printf(RED "5. Quitter\n" RESET);
-        printf(YELLOW "\nChoisissez une option : ");
+        printf(YELLOW "\nChoisissez une option : "RESET);
         scanf("%d", &choice);
+
+        system("clear");
 
         switch (choice) {
             case 1:

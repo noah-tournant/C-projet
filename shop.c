@@ -15,7 +15,7 @@ void shop(Player *player) {
         printf(RED "5. Quitter la boutique\n" RESET);
         printf(CYAN "\nChoisissez une option : " RESET);
         scanf("%d", &choice);
-
+        system("clear");
         switch (choice) {
             case 1:
                 if (player->supcoins >= 100 && player->itemCount < MAX_ITEMS) {
@@ -79,7 +79,7 @@ void sellItems(Player *player) {
     int choice;
     printf(CYAN "Choisissez un item à vendre (0 pour annuler) : " RESET);
     scanf("%d", &choice);
-
+    system("clear");
     if (choice > 0 && choice <= player->itemCount) {
         int sellPrice = player->items[choice - 1].price /2;
         player->supcoins += sellPrice;
