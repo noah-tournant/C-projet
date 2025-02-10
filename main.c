@@ -103,13 +103,15 @@ void mainMenu(Player *player) {
     int choice;
     printf("\n" BOLD "Bienvenue, %s ! Que voulez-vous faire ?\n" RESET, player->name);
     do {
-        printf(BOLD "\nMenu Principal\n" RESET);
+        printf(BOLD "\n----------------------------------------\n" RESET);
+        printf(BOLD MAGENTA "\nMenu Principal\n" RESET);
+        printf(BOLD "\n----------------------------------------\n\n" RESET);
         printf(GREEN "1. Combattre dans la nature\n" RESET);
-        printf(YELLOW "2. Accéder au magasin\n" RESET);
-        printf(CYAN "3. Centre Supémon\n" RESET);
-        printf(MAGENTA "4. Sauvegarder le jeu\n" RESET);
+        printf(BLUE "2. Accéder au magasin\n" RESET);
+        printf(MAGENTA "3. Centre Supémon\n" RESET);
+        printf(CYAN "4. Sauvegarder le jeu\n" RESET);
         printf(RED "5. Quitter\n" RESET);
-        printf("Choisissez une option : ");
+        printf(YELLOW "\nChoisissez une option : ");
         scanf("%d", &choice);
 
         switch (choice) {

@@ -4,16 +4,16 @@
 void shop(Player *player) {
     int choice;
     do {
-        printf(BOLD "----------------------------------------\n" RESET);
-        printf(BOLD MAGENTA "Bienvenue à la boutique !\n" RESET);
-        printf(BOLD "----------------------------------------\n" RESET);
-        printf(CYAN "Vous avez %d Supcoins.\n" RESET, player->supcoins);
-        printf(GREEN "1. Acheter Potion (100 Supcoins)\n" RESET);
-        printf(GREEN "2. Acheter Super Potion (300 Supcoins)\n" RESET);
-        printf(GREEN "3. Acheter Bonbon Giga Rare (700 Supcoins)\n" RESET);
-        printf(YELLOW "4. Vendre des items\n" RESET);
+        printf(BOLD "----------------------------------------\n\n" RESET);
+        printf(BOLD MAGENTA "Bienvenue à la boutique !\n\n" RESET);
+        printf(BOLD "----------------------------------------\n\n" RESET);
+        printf(CYAN "Vous avez "GREEN"%d Supcoins.\n" RESET, player->supcoins);
+        printf(BLUE "1. Acheter Potion: " YELLOW "100 Supcoins\n" RESET);
+        printf(BLUE "2. Acheter Super Potion: "YELLOW"300 Supcoins\n" RESET);
+        printf(BLUE "3. Acheter Bonbon Giga Rare: "YELLOW"700 Supcoins\n" RESET);
+        printf(GREEN "4. Vendre des items\n" RESET);
         printf(RED "5. Quitter la boutique\n" RESET);
-        printf(CYAN "Choisissez une option : " RESET);
+        printf(CYAN "\nChoisissez une option : " RESET);
         scanf("%d", &choice);
 
         switch (choice) {
@@ -24,9 +24,9 @@ void shop(Player *player) {
                     player->items[player->itemCount].price = 100;
                     player->items[player->itemCount].effectValue = 5;
                     player->itemCount++;
-                    printf(GREEN "Tu as acheté une Potion!\n" RESET);
+                    printf(GREEN "\nTu as acheté une Potion!\n" RESET);
                 } else {
-                    printf(RED "C'est la desh loser ou t'as plus de place.\n" RESET);
+                    printf(RED "C'est la desh ou t'as plus de place.\n" RESET);
                 }
                 break;
             case 2:
@@ -38,7 +38,7 @@ void shop(Player *player) {
                     player->itemCount++;
                     printf(GREEN "Tu as acheté une Super Potion!\n" RESET);
                 } else {
-                    printf(RED "C'est la desh loser ou t'as plus de place.\n" RESET);
+                    printf(RED "C'est la desh ou t'as plus de place.\n" RESET);
                 }
                 break;
             case 3:
@@ -50,7 +50,7 @@ void shop(Player *player) {
                     player->itemCount++;
                     printf(GREEN "Tu as acheté un Bonbon Giga Rare !\n" RESET);
                 } else {
-                    printf(RED "C'est la desh loser ou t'as plus de place.\n" RESET);
+                    printf(RED "C'est la desh4 ou t'as plus de place.\n" RESET);
                 }
                 break;
             case 4:
@@ -71,17 +71,17 @@ void sellItems(Player *player) {
         return;
     }
 
-    printf(CYAN "Voici vos items :\n" RESET);
+    printf(GREEN "Voici vos items :\n" RESET);
     for (int i = 0; i < player->itemCount; i++) {
-        printf(GREEN "%d. %s (Prix de vente: %d Supcoins)\n" RESET, i + 1, player->items[i].name, player->items[i].price * 80 / 100);
+        printf(BLUE "%d. %s "YELLOW"(Prix de vente: %d Supcoins)\n" RESET, i + 1, player->items[i].name, player->items[i].price * 80 / 100);
     }
 
     int choice;
-    printf(YELLOW "Choisissez un item à vendre (0 pour annuler) : " RESET);
+    printf(CYAN "Choisissez un item à vendre (0 pour annuler) : " RESET);
     scanf("%d", &choice);
 
     if (choice > 0 && choice <= player->itemCount) {
-        int sellPrice = player->items[choice - 1].price * 80 / 100;
+        int sellPrice = player->items[choice - 1].price /2;
         player->supcoins += sellPrice;
         printf(GREEN "Vous avez vendu %s pour %d Supcoins.\n" RESET, player->items[choice - 1].name, sellPrice);
 
