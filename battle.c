@@ -8,7 +8,7 @@ void applyMove(Supemon *attacker, Supemon *defender, Move move) {
         // Attaque réussie
         if (move.damage > 0) {
             // Calculer les dégâts
-            int damage = (attacker->attack * move.damage) / defender->defense;
+            int damage = (attacker->attack * move.damage) / defender-> defense;
             if (rand() % 2 == 0) {
                 damage = (damage + 1) / 2; // Arrondir vers le haut
             } else {
@@ -46,7 +46,6 @@ void applyMove(Supemon *attacker, Supemon *defender, Move move) {
     }
 }
 
-
 void captureSupemon(Player *player, Supemon *enemySupemon) {
     float captureRate = ((float)(enemySupemon->maxHP - enemySupemon->HP) / enemySupemon->maxHP) - 0.5;
     if (captureRate < 0) captureRate = 0; // Ensure capture rate is not negative
@@ -73,15 +72,18 @@ void battle(Player *player) {
 
     printf(MAGENTA "Un %s sauvage apparaît !\n" RESET, enemySupemon.name);
 
-    while (playerSupemon->HP > 0 && enemySupemon.HP > 0) {
-        // Déterminer qui commence
-        int playerTurn = (playerSupemon->speed > enemySupemon.speed) || (playerSupemon->speed == enemySupemon.speed && rand() % 2 == 0);
+    // Déterminer qui commence
+    int playerTurn = (playerSupemon->speed > enemySupemon.speed);
+
+    while (player->supemons[0].HP > 0 && enemySupemon.HP > 0) {
+        
 
         if (playerTurn) {
             // Tour du joueur
             int action;
             printf(CYAN "Choisissez une action :\n1. Attaque\n2. Changer de Supémon\n3. Utiliser un objet\n4. Fuir\n5. Capturer\n" RESET);
             scanf("%d", &action);
+            playerTurn = 0; // Passer le tour à l'ennemi
 
             switch (action) {
                 case 1:
@@ -141,6 +143,7 @@ void battle(Player *player) {
             Move enemyMove = enemySupemon.moves[moveIndex];
             printf(RED "L'ennemi %s utilise %s !\n" RESET, enemySupemon.name, enemyMove.name);
             applyMove(&enemySupemon, playerSupemon, enemyMove);
+            playerTurn = 1; // Passer le tour au joueur
         }
     }
 
