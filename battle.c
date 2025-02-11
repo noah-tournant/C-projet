@@ -192,7 +192,7 @@ void battle(Player *player) {
         printf(RED "Votre Supémon est KO !\n" RESET);
     } else {
         printf(GREEN "Vous avez vaincu le %s sauvage !\n" RESET, enemySupemon.name);
-        int expGained = 100;
+        int expGained = 500;
         gainExperience(playerSupemon, expGained);
     }
 }
