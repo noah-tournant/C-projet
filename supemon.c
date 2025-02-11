@@ -4,7 +4,7 @@
 Supemon supemonsSauvages[MAX_SUPEMON];
 int supemonsSauvagesCount = 0;
 
-void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int hp, int attack, int defense, int evasion, int accuracy, int speed, Move moves[MAX_MOVES]) {
+void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int hp, int attack, int defense, int evasion, int accuracy, int speed, int exp, Move moves[MAX_MOVES]) {
     // Copier le nom du Supémon
     strcpy(supemon->name, name);
     
@@ -17,7 +17,7 @@ void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int h
     supemon->evasion = evasion;
     supemon->accuracy = accuracy;
     supemon->speed = speed;
-    supemon->experience = 0; // Initialiser l'expérience à 0
+    supemon->experience = exp; // Initialiser l'expérience à 0
     
     // Copier les mouvements du Supémon
     for (int i = 0; i < MAX_MOVES; i++) {

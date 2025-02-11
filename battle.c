@@ -1,5 +1,25 @@
 #include "header.h"
 
+void gainExperience(Supemon *supemon, int exp) {
+    supemon->experience += exp;
+    int expToNextLevel = 500 + (supemon->level - 1) * 1000;
+
+    while (supemon->experience >= expToNextLevel) {
+        supemon->experience -= expToNextLevel;
+        supemon->level++;
+        expToNextLevel = 500 + (supemon->level - 1) * 1000;
+
+        // Increase stats by 30%
+        supemon->maxHP = (int)(supemon->maxHP * 1.3 + (rand() % 2));
+        supemon->attack = (int)(supemon->attack * 1.3 + (rand() % 2));
+        supemon->defense = (int)(supemon->defense * 1.3 + (rand() % 2));
+        supemon->speed = (int)(supemon->speed * 1.3 + (rand() % 2));
+        supemon->accuracy = (int)(supemon->accuracy * 1.3 + (rand() % 2));
+        supemon->evasion = (int)(supemon->evasion * 1.3 + (rand() % 2));
+
+        printf(GREEN "%s a atteint le niveau %d !\n" RESET, supemon->name, supemon->level);
+    }
+}
 
 void applyMove(Supemon *attacker, Supemon *defender, Move move) {
     // Calculer le taux de réussite de l'attaque
@@ -172,6 +192,7 @@ void battle(Player *player) {
         printf(RED "Votre Supémon est KO !\n" RESET);
     } else {
         printf(GREEN "Vous avez vaincu le %s sauvage !\n" RESET, enemySupemon.name);
-        // Récompenser le joueur
+        int expGained = 100;
+        gainExperience(playerSupemon, expGained);
     }
 }

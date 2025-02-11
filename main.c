@@ -50,32 +50,32 @@ int main() {
     };
 
     Supemon supmander;
-    initSupemon(&supmander, "Supmander", 1, 10, 10, 2, 2, 3, 2, 2, supmanderMoves);
+    initSupemon(&supmander, "Supmander", 1, 10, 10, 2, 2, 3, 2, 2, 0, supmanderMoves);
     
     Supemon supasaur;
-    initSupemon(&supasaur, "Supasaur", 1, 9, 9, 1, 1, 3, 2, 2, supasaurMoves);
+    initSupemon(&supasaur, "Supasaur", 1, 9, 9, 1, 1, 3, 2, 2, 0, supasaurMoves);
 
     Supemon supirtle;
-    initSupemon(&supirtle, "Supirtle", 1, 11, 11, 1, 2, 2, 1, 2, supirtleMoves);
+    initSupemon(&supirtle, "Supirtle", 1, 11, 11, 1, 2, 2, 1, 2, 0, supirtleMoves);
 
     Supemon mewtoo;
-    initSupemon(&mewtoo, "Mewtoo", 1, 20, 20, 3, 3, 3, 2, 3, mewtooMoves);
+    initSupemon(&mewtoo, "Mewtoo", 1, 20, 20, 3, 3, 3, 2, 3, 0, mewtooMoves);
     addSupemonsauvage(mewtoo);
 
     Supemon pikachu;
-    initSupemon(&pikachu, "Pikachu", 1, 8, 8, 1, 1, 3, 2, 3, pikachuMoves);
+    initSupemon(&pikachu, "Pikachu", 1, 8, 8, 1, 1, 3, 2, 3, 0, pikachuMoves);
     addSupemonsauvage(pikachu);
 
     Supemon evoli;
-    initSupemon(&evoli, "Evoli", 1, 9, 9, 1, 1, 2, 2, 2, evoliMoves);
+    initSupemon(&evoli, "Evoli", 1, 9, 9, 1, 1, 2, 2, 2, 0, evoliMoves);
     addSupemonsauvage(evoli);
 
     Supemon tiplouf;
-    initSupemon(&tiplouf, "Tiplouf", 1, 8, 8, 2, 2, 2, 2, 2, tiploufMoves);
+    initSupemon(&tiplouf, "Tiplouf", 1, 8, 8, 2, 2, 2, 2, 2, 0, tiploufMoves);
     addSupemonsauvage(tiplouf);
 
     Supemon voltorbe;
-    initSupemon(&voltorbe, "Voltorbe", 1, 7, 7, 1, 1, 1, 1, 1, voltorbeMoves);
+    initSupemon(&voltorbe, "Voltorbe", 1, 7, 7, 1, 1, 1, 1, 1, 0, voltorbeMoves);
     addSupemonsauvage(voltorbe);
 
     printf(BOLD CYAN"Choisissez entre "RED"1:Supmander,"BLUE" 2:Supasaur "CYAN" et "GREEN" 3:Supirtle\n"RESET);

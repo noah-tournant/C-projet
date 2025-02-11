@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 
 #define RESET "\033[0m"
@@ -39,16 +40,16 @@ typedef struct {
 
 typedef struct {
     char name[50];
-    int level;
-    int maxHP;
     int HP;
+    int maxHP;
     int attack;
     int defense;
-    int evasion;
-    int accuracy;
     int speed;
-    int experience;
+    int accuracy;
+    int evasion;
     Move moves[MAX_MOVES];
+    int level;
+    int experience;
 } Supemon;
 
 typedef struct {
@@ -82,5 +83,5 @@ void shop(Player *player);
 void sell(Player *player);
 void CentreSupemon(Player *player);
 void sellItems(Player *player);
-
+void gainExperience(Supemon *supemon, int exp);
 #endif // HEADER_H
