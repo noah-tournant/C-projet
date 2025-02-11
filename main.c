@@ -50,7 +50,7 @@ int main() {
     };
 
     Supemon supmander;
-    initSupemon(&supmander, "Supmander", 1, 10, 10, 2, 2, 3, 2, 2, 0, supmanderMoves);
+    initSupemon(&supmander, "Supmander", 1, 10, 10, 2, 2, 3, 2, 2,0, supmanderMoves);
     
     Supemon supasaur;
     initSupemon(&supasaur, "Supasaur", 1, 9, 9, 1, 1, 3, 2, 2, 0, supasaurMoves);

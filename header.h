@@ -67,7 +67,7 @@ extern Supemon supemonsSauvages[MAX_SUPEMON];
 extern int supemonsSauvagesCount;
 
 // Déclarations des fonctions
-void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int hp, int attack, int defense, int evasion, int accuracy, int speed, Move moves[MAX_MOVES]);
+void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int hp, int attack, int defense, int evasion, int accuracy, int speed,int xp, Move moves[MAX_MOVES]);
 void addSupemon(Player *player, Supemon supemon);
 void addSupemonsauvage(Supemon supemon);
 void initPlayer(Player *player, const char *name);
