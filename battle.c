@@ -90,6 +90,38 @@ int captureSupemon(Player *player, Supemon *enemySupemon) {
     return 0;
 }
 
+void useItem(Player *player, Supemon *supemon, int itemIndex) {
+    if (itemIndex < 0 || itemIndex >= player->itemCount) {
+        printf(RED "Item invalide.\n" RESET);
+        return;
+    }
+
+    Item *item = &player->items[itemIndex];
+    if (strcmp(item->name, "Potion") == 0) {
+        supemon->HP += 5;
+        if (supemon->HP > supemon->maxHP) {
+            supemon->HP = supemon->maxHP;
+        }
+        printf(GREEN "%s utilise une Potion et récupère 5 PV.\n" RESET, supemon->name);
+    } if (strcmp(item->name, "Super potion") == 0) {
+        supemon->HP += 10;
+        if (supemon->HP > supemon->maxHP) {
+            supemon->HP = supemon->maxHP;
+        }
+        printf(GREEN "%s utilise une Super potion et récupère 10 PV.\n" RESET, supemon->name);
+    } if (strcmp(item->name, "Rare candy") == 0) {
+        gainExperience(supemon, 500 + (supemon->level - 1) * 1000); // Add enough experience to level up
+        printf(GREEN "%s utilise un Rare candy et gagne un niveau.\n" RESET, supemon->name);
+    }
+
+    // Remove the used item from the player's inventory
+    for (int i = itemIndex; i < player->itemCount - 1; i++) {
+        player->items[i] = player->items[i + 1];
+    }
+    player->itemCount--;
+    player->items[player->itemCount].name[0] = '\0'; // Clear the last item slot
+}
+
 void battle(Player *player) {
     Supemon *playerSupemon = NULL;
     player->selectedSupemonIndex = 0; // Sélectionner le premier Supémon par défaut
@@ -99,6 +131,9 @@ void battle(Player *player) {
     }
     playerSupemon = &player->supemons[player->selectedSupemonIndex];
     Supemon enemySupemon;
+    
+    // Initialiser le générateur de nombres aléatoires
+    srand(time(NULL));
 
     // Sélectionner un Supémon sauvage au hasard
     int randomIndex = rand() % supemonsSauvagesCount;
@@ -116,7 +151,8 @@ void battle(Player *player) {
     enemySupemon.HP = enemySupemon.maxHP;
     // Déterminer qui commence
     int playerTurn = (playerSupemon->speed > enemySupemon.speed) ? 1 : 0;
-    printf(BLUE "%s "GREEN"sauvage apparaît !\n" RESET,enemySupemon.name);
+    printf(BLUE "%s "GREEN"sauvage apparaît !\n" RESET, enemySupemon.name);
+    int itemsUsed = 0;
     while (playerSupemon->HP > 0 && enemySupemon.HP > 0) {
         
         printf(BLUE "PV de %s:"GREEN" %d\n" RESET, playerSupemon->name, playerSupemon->HP);
@@ -166,7 +202,23 @@ void battle(Player *player) {
                     }
                     break;
                 case 3:
-                    // Le joueur utilise un objet
+                if (itemsUsed < 4) {
+                    printf(CYAN "Choisissez un objet :\n" RESET);
+                    for (int i = 0; i < player->itemCount; i++) {
+                        printf(BLUE"%d. %s\n", i + 1, player->items[i].name);
+                    }
+                    int itemIndex;
+                    scanf("%d", &itemIndex);
+                    system("clear");
+                    if (itemIndex > 0 && itemIndex <= player->itemCount) {
+                        useItem(player, playerSupemon, itemIndex - 1);
+                        itemsUsed++;
+                    } else {
+                        printf(RED "Objet invalide.\n" RESET);
+                    }
+                } else {
+                    printf(RED "Vous avez déjà utilisé le nombre maximum d'objets dans ce combat.\n" RESET);
+                }
                     break;
                 case 4:
                     {
@@ -204,5 +256,8 @@ void battle(Player *player) {
         printf(GREEN "Vous avez vaincu le %s sauvage !\n" RESET, enemySupemon.name);
         int expGained = 500;
         gainExperience(playerSupemon, expGained);
+        int goldReward = 300;
+        player->supcoins += goldReward;
+        printf(GREEN "Vous avez gagné 300 Supcoins !\n");
     }
 }

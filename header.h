@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-
+#include <time.h>
 
 #define RESET "\033[0m"
 #define BOLD "\033[1m"
