@@ -22,7 +22,7 @@ void applyMove(Supemon *attacker, Supemon *defender, Move move) {
             }
             defender->HP -= damage;
             if (defender->HP < 0) defender->HP = 0;
-            printf(CYAN "%s utilise %s et "RED"inflige %d dégâts à "CYAN"%s.\n" RESET, attacker->name, move.name, damage, defender->name);
+            printf(CYAN "%s utilise %s et "RED"inflige %d dégâts à "CYAN"%s.\n\n" RESET, attacker->name, move.name, damage, defender->name);
         }
         if (move.buff.value != 0) {
             // Appliquer les effets de buff/debuff
@@ -34,7 +34,7 @@ void applyMove(Supemon *attacker, Supemon *defender, Move move) {
                     case 4: attacker->accuracy += move.buff.value; break;
                     case 5: attacker->speed += move.buff.value; break;
                 }
-                printf(CYAN "%s utilise %s et "GREEN"augmente sa statistique de %d.\n" RESET, attacker->name, move.name, move.buff.value);
+                printf(CYAN "%s "CYAN" utilise "BLUE"%s "CYAN"et "GREEN"augmente sa statistique de %d.\n" RESET, attacker->name, move.name, move.buff.value);
             } else {
                 switch (move.buff.statType) {
                     case 1: defender->attack += move.buff.value; break;
@@ -43,12 +43,12 @@ void applyMove(Supemon *attacker, Supemon *defender, Move move) {
                     case 4: defender->accuracy += move.buff.value; break;
                     case 5: defender->speed += move.buff.value; break;
                 }
-                printf(CYAN "%s utilise %s et"BLUE"diminue la statistique de %d de %s.\n" RESET, attacker->name, move.name, -move.buff.value, defender->name);
+                printf(RED "%s"CYAN" utilise"BLUE" %s"CYAN" et"MAGENTA" diminue la statistique de %d de %s.\n" RESET, attacker->name, move.name, -move.buff.value, defender->name);
             }
         }
     } else {
         // Attaque ratée
-        printf(MAGENTA "%s a raté son attaque !\n" RESET, attacker->name);
+        printf(RED "%s"MAGENTA" a raté son attaque !\n" RESET, attacker->name);
     }
 }
 
@@ -59,7 +59,7 @@ void captureSupemon(Player *player, Supemon *enemySupemon) {
     if ((float)rand() / RAND_MAX < captureRate) {
         if (player->supemonCount < MAX_SUPEMON) {
             addSupemon(player, *enemySupemon);
-            printf(GREEN "Vous avez capturé %s !\n" RESET, enemySupemon->name);
+            printf(GREEN "Vous avez capturé"BLUE" %s !\n" RESET, enemySupemon->name);
         } else {
             printf(RED "Vous avez déjà le nombre maximum de Supémons.\n" RESET);
         }
@@ -84,15 +84,17 @@ void battle(Player *player) {
 
     // Déterminer qui commence
     int playerTurn = (playerSupemon->speed > enemySupemon.speed) ? 1 : 0;
-        
+    printf(BLUE "%s "GREEN"sauvage apparaît !\n" RESET,enemySupemon.name);
     while (playerSupemon->HP > 0 && enemySupemon.HP > 0) {
-        printf(CYAN "PV de %s: %d\n" RESET, playerSupemon->name, playerSupemon->HP);
-        printf(RED "PV de l'ennemi %s: %d\n" RESET, enemySupemon.name, enemySupemon.HP);
+        
+        printf(BLUE "PV de %s:"GREEN" %d\n" RESET, playerSupemon->name, playerSupemon->HP);
+        printf(RED "PV de %s:"GREEN" %d\n\n" RESET, enemySupemon.name, enemySupemon.HP);
         if (playerTurn) {
             // Tour du joueur
             int action;
             printf(CYAN "Choisissez une action :\n"RED"1. Attaque\n"BLUE"2. Changer de Supémon\n"CYAN"3. Utiliser un objet\n"YELLOW"4. Fuir\n"GREEN"5. Capturer\n\n" RESET);
             scanf("%d", &action);
+            system("clear");
             playerTurn = 0; // Passer le tour à l'ennemi
 
             switch (action) {
@@ -108,6 +110,7 @@ void battle(Player *player) {
                     }
                     int moveIndex;
                     scanf("%d", &moveIndex);
+                    system("clear");
                     if (moveIndex > 0 && moveIndex <= MAX_MOVES) {
                         applyMove(playerSupemon, &enemySupemon, playerSupemon->moves[moveIndex - 1]);
                     } else {
@@ -155,7 +158,7 @@ void battle(Player *player) {
             // Tour de l'ennemi
             int moveIndex = rand() % MAX_MOVES;
             Move enemyMove = enemySupemon.moves[moveIndex];
-            printf(RED "L'ennemi %s utilise %s !\n" RESET, enemySupemon.name, enemyMove.name);
+            printf(CYAN "L'ennemi "RED"%s "CYAN"utilise"BLUE" %s !\n\n" RESET, enemySupemon.name, enemyMove.name);
             applyMove(&enemySupemon, playerSupemon, enemyMove);
             playerTurn = 1; // Passer le tour au joueur
         }

@@ -80,6 +80,7 @@ int main() {
 
     printf(BOLD CYAN"Choisissez entre "RED"1:Supmander,"BLUE" 2:Supasaur "CYAN" et "GREEN" 3:Supirtle\n"RESET);
     scanf("%d", &player.selectedSupemonIndex);
+    system("clear");
     if (player.selectedSupemonIndex == 1) {
         printf(RED"Vous avez choisi Supmander\n");
         addSupemon(&player, supmander);
