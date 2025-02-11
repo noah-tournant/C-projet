@@ -84,4 +84,5 @@ void sell(Player *player);
 void CentreSupemon(Player *player);
 void sellItems(Player *player);
 void gainExperience(Supemon *supemon, int exp);
+void displayMenu(Player *player);
 #endif // HEADER_H

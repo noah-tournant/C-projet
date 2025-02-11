@@ -5,10 +5,11 @@ extern int supemonsSauvagesCount;
 
 int main() {
     Player player;
+    
     printf(BOLD MAGENTA"Votre prénom: ");
     scanf("%49s", player.name);
     initPlayer(&player, player.name);
-
+    
     Move supmanderMoves[MAX_MOVES] = {
         {"cri", 0, {1, 1}},
         {"griffe", 2, {0, 0}},
@@ -82,15 +83,15 @@ int main() {
     scanf("%d", &player.selectedSupemonIndex);
     system("clear");
     if (player.selectedSupemonIndex == 1) {
-        printf(RED"Vous avez choisi Supmander\n");
+        printf(RED"Vous avez choisi Supmander\n"RESET);
         addSupemon(&player, supmander);
     } else if (player.selectedSupemonIndex == 2) {
-        printf(BLUE"Vous avez choisi Supasaur\n");
+        printf(BLUE"Vous avez choisi Supasaur\n"RESET);
         addSupemon(&player, supasaur);
-            } else if (player.selectedSupemonIndex == 3) {
-        printf(GREEN"Vous avez choisi Supirtle\n");
+    } else if (player.selectedSupemonIndex == 3) {
+        printf(GREEN"Vous avez choisi Supirtle\n"RESET);
         addSupemon(&player, supirtle);
-            } else {
+    } else {
         printf("Choix invalide\n");
     }
     // Lancer le menu principal
@@ -101,6 +102,9 @@ int main() {
 
 void mainMenu(Player *player) {
     int choice;
+
+    displayMenu(player);
+
     printf("\n" BOLD CYAN "Bienvenue, %s ! Que voulez-vous faire ?\n" RESET, player->name);
     do {
         printf(BOLD "\n----------------------------------------\n" RESET);
@@ -131,9 +135,10 @@ void mainMenu(Player *player) {
                 break;
             case 5:
                 printf("Au revoir !\n");
+                exit(0);
                 break;
             default:
                 printf(RED "Choix invalide. Essayez encore.\n" RESET);
         }
-    } while (choice != 5);
+    } while (choice != 6);
 }
