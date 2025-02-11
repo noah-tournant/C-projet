@@ -104,6 +104,16 @@ void battle(Player *player) {
     int randomIndex = rand() % supemonsSauvagesCount;
     enemySupemon = supemonsSauvages[randomIndex];
 
+    enemySupemon.level = playerSupemon->level;
+    for (int i = 1; i < enemySupemon.level; i++) {
+        enemySupemon.maxHP = (int)(enemySupemon.maxHP * 1.3 + (rand() % 2));
+        enemySupemon.attack = (int)(enemySupemon.attack * 1.3 + (rand() % 2));
+        enemySupemon.defense = (int)(enemySupemon.defense * 1.3 + (rand() % 2));
+        enemySupemon.speed = (int)(enemySupemon.speed * 1.3 + (rand() % 2));
+        enemySupemon.accuracy = (int)(enemySupemon.accuracy * 1.3 + (rand() % 2));
+        enemySupemon.evasion = (int)(enemySupemon.evasion * 1.3 + (rand() % 2));
+    }
+    enemySupemon.HP = enemySupemon.maxHP;
     // Déterminer qui commence
     int playerTurn = (playerSupemon->speed > enemySupemon.speed) ? 1 : 0;
     printf(BLUE "%s "GREEN"sauvage apparaît !\n" RESET,enemySupemon.name);
