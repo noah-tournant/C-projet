@@ -71,7 +71,7 @@ void addSupemon(Player *player, Supemon supemon);
 void addSupemonsauvage(Supemon supemon);
 void initPlayer(Player *player, const char *name);
 void applyMove(Supemon *attacker, Supemon *defender, Move move);
-void captureSupemon(Player *player, Supemon *enemySupemon);
+int captureSupemon(Player *player, Supemon *enemySupemon);
 void battle(Player *player);
 void displaySupemon(Supemon *supemon);
 void attack(Supemon *attacker, Supemon *defender);

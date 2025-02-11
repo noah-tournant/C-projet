@@ -52,7 +52,7 @@ void applyMove(Supemon *attacker, Supemon *defender, Move move) {
     }
 }
 
-void captureSupemon(Player *player, Supemon *enemySupemon) {
+int captureSupemon(Player *player, Supemon *enemySupemon) {
     float captureRate = ((float)(enemySupemon->maxHP - enemySupemon->HP) / enemySupemon->maxHP) - 0.5;
     if (captureRate < 0) captureRate = 0; // Ensure capture rate is not negative
 
@@ -60,12 +60,14 @@ void captureSupemon(Player *player, Supemon *enemySupemon) {
         if (player->supemonCount < MAX_SUPEMON) {
             addSupemon(player, *enemySupemon);
             printf(GREEN "Vous avez capturé"BLUE" %s !\n" RESET, enemySupemon->name);
+            return 1;
         } else {
             printf(RED "Vous avez déjà le nombre maximum de Supémons.\n" RESET);
         }
     } else {
         printf(RED "La capture a échoué.\n" RESET);
     }
+    return 0;
 }
 
 void battle(Player *player) {
@@ -148,8 +150,10 @@ void battle(Player *player) {
                     }
                     break;
                 case 5:
-                    // Le joueur essaie de capturer le Supémon ennemi
-                    captureSupemon(player, &enemySupemon);
+                if (captureSupemon(player, &enemySupemon)) {
+                    printf("Bien joué tu as capturé le %s\n" , enemySupemon.name);
+                    return; // Terminer le combat après une capture réussie
+                }
                     break;
                 default:
                     printf(RED "Action invalide. Réessayez.\n" RESET);
