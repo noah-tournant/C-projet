@@ -45,7 +45,7 @@ void displayMenu(Player *player) {
                 loadGame(player);
                 break;
             case 2:
-                printf("Démarrage d'une nouvelle partie (fonctionnalité à implémenter)\n");
+                printf("Démarrage d'une nouvelle partie\n");
                 break;
             case 3:
                 printf("Au revoir !\n");

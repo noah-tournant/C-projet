@@ -80,7 +80,7 @@ void sellItems(Player *player) {
 
     printf(GREEN "Voici vos items :\n" RESET);
     for (int i = 0; i < player->itemCount; i++) {
-        printf(BLUE "%d. %s "YELLOW"(Prix de vente: %d Supcoins)\n" RESET, i + 1, player->items[i].name, player->items[i].price * 80 / 100);
+        printf(BLUE "%d. %s "YELLOW"(Prix de vente: %d Supcoins)\n" RESET, i + 1, player->items[i].name, player->items[i].price/2);
     }
 
     int choice;
