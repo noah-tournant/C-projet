@@ -94,7 +94,6 @@ int main() {
     } else {
         printf("Choix invalide\n");
     }
-    // Lancer le menu principal
     mainMenu(&player);
 
     return 0;

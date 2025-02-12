@@ -17,16 +17,16 @@
 #define CYAN "\033[36m"
 #define WHITE "\033[37m"
 
-// Déclarations des constantes
+
 #define MAX_SUPEMON 100
 #define MAX_MOVES 2
 #define MAX_ITEMS 10
 
-// Déclarations des structures
+
 typedef struct {
     char name[50];
     int price;
-    int effectValue; // Par exemple, pour les potions : combien de HP ils ajoutent
+    int effectValue;
 } Item;
 
 typedef struct {
@@ -34,7 +34,7 @@ typedef struct {
     int damage;
     struct {
         int value;
-        int statType; // 1:atk, 2:def, 3:evasion, 4:accuracy, 5:speed
+        int statType;
     } buff;
 } Move;
 
@@ -62,11 +62,10 @@ typedef struct {
     Item items[MAX_ITEMS];
 } Player;
 
-// Déclaration des variables globales
 extern Supemon supemonsSauvages[MAX_SUPEMON];
 extern int supemonsSauvagesCount;
 
-// Déclarations des fonctions
+
 void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int hp, int attack, int defense, int evasion, int accuracy, int speed,int xp, Move moves[MAX_MOVES]);
 void addSupemon(Player *player, Supemon supemon);
 void addSupemonsauvage(Supemon supemon);
@@ -85,4 +84,4 @@ void CentreSupemon(Player *player);
 void sellItems(Player *player);
 void gainExperience(Supemon *supemon, int exp);
 void displayMenu(Player *player);
-#endif // HEADER_H
+#endif

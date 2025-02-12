@@ -1,14 +1,11 @@
 #include "header.h"
 
-// Définition globale de supemonsSauvages et supemonsSauvagesCount
 Supemon supemonsSauvages[MAX_SUPEMON];
 int supemonsSauvagesCount = 0;
 
 void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int hp, int attack, int defense, int evasion, int accuracy, int speed, int exp, Move moves[MAX_MOVES]) {
-    // Copier le nom du Supémon
+
     strcpy(supemon->name, name);
-    
-    // Initialiser les attributs du Supémon
     supemon->level = level;
     supemon->maxHP = maxHP;
     supemon->HP = hp;
@@ -17,9 +14,8 @@ void initSupemon(Supemon *supemon, const char *name, int level, int maxHP, int h
     supemon->evasion = evasion;
     supemon->accuracy = accuracy;
     supemon->speed = speed;
-    supemon->experience = exp; // Initialiser l'expérience à 0
-    
-    // Copier les mouvements du Supémon
+    supemon->experience = exp; 
+
     for (int i = 0; i < MAX_MOVES; i++) {
         supemon->moves[i] = moves[i];
     }

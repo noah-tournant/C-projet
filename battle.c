@@ -16,36 +16,33 @@ void gainExperience(Supemon *supemon, int exp) {
         supemon->speed = (int)(supemon->speed * 1.3 + (rand() % 2));
         supemon->accuracy = (int)(supemon->accuracy * 1.3 + (rand() % 2));
         supemon->evasion = (int)(supemon->evasion * 1.3 + (rand() % 2));
+        supemon->HP =(int)(supemon->maxHP);
 
         printf(GREEN "%s a atteint le niveau %d !\n" RESET, supemon->name, supemon->level);
     }
 }
 
 void applyMove(Supemon *attacker, Supemon *defender, Move move) {
-    // Calculer le taux de réussite de l'attaque
     float hitChance = (float)attacker->accuracy / (attacker->accuracy + defender->evasion) + 0.1;
     if ((float)rand() / RAND_MAX < hitChance) {
-        // Attaque réussie
         if (move.damage > 0) {
-            // Calculer les dégâts
-            int damage = 1; // Default damage
+            int damage = 1;
             if (defender->defense > 0) {
                 damage = (attacker->attack * move.damage) / defender->defense;
                 if (damage <= 0) {
-                    damage = 1; // Ensure at least 1 damage
+                    damage = 1; 
                 }
             }
             if (rand() % 2 == 0) {
-                damage = (damage + 1) / 2; // Arrondir vers le haut
+                damage = (damage + 1) / 2; 
             } else {
-                damage = damage / 2; // Arrondir vers le bas
+                damage = damage / 2; 
             }
             defender->HP -= damage;
             if (defender->HP < 0) defender->HP = 0;
             printf(CYAN "%s utilise %s et "RED"inflige %d dégâts à "CYAN"%s.\n\n" RESET, attacker->name, move.name, damage, defender->name);
         }
         if (move.buff.value != 0) {
-            // Appliquer les effets de buff/debuff
             if (move.buff.value > 0) {
                 switch (move.buff.statType) {
                     case 1: attacker->attack += move.buff.value; break;
@@ -67,14 +64,13 @@ void applyMove(Supemon *attacker, Supemon *defender, Move move) {
             }
         }
     } else {
-        // Attaque ratée
         printf(RED "%s"MAGENTA" a raté son attaque !\n" RESET, attacker->name);
     }
 }
 
 int captureSupemon(Player *player, Supemon *enemySupemon) {
     float captureRate = ((float)(enemySupemon->maxHP - enemySupemon->HP) / enemySupemon->maxHP) - 0.5;
-    if (captureRate < 0) captureRate = 0; // Ensure capture rate is not negative
+    if (captureRate < 0) captureRate = 0;
 
     if ((float)rand() / RAND_MAX < captureRate) {
         if (player->supemonCount < MAX_SUPEMON) {
@@ -103,28 +99,27 @@ void useItem(Player *player, Supemon *supemon, int itemIndex) {
             supemon->HP = supemon->maxHP;
         }
         printf(GREEN "%s utilise une Potion et récupère 5 PV.\n" RESET, supemon->name);
-    } if (strcmp(item->name, "Super potion") == 0) {
+    } else if (strcmp(item->name, "Super Potion") == 0) {
         supemon->HP += 10;
         if (supemon->HP > supemon->maxHP) {
             supemon->HP = supemon->maxHP;
         }
-        printf(GREEN "%s utilise une Super potion et récupère 10 PV.\n" RESET, supemon->name);
-    } if (strcmp(item->name, "Rare candy") == 0) {
+        printf(GREEN "%s utilise une Super Potion et récupère 10 PV.\n" RESET, supemon->name);
+    } else if (strcmp(item->name, "Bonbon Giga Rare") == 0) {
         gainExperience(supemon, 500 + (supemon->level - 1) * 1000); // Add enough experience to level up
-        printf(GREEN "%s utilise un Rare candy et gagne un niveau.\n" RESET, supemon->name);
+        printf(GREEN "%s utilise un Bonbon Giga Rare et gagne un niveau.\n" RESET, supemon->name);
     }
 
-    // Remove the used item from the player's inventory
     for (int i = itemIndex; i < player->itemCount - 1; i++) {
         player->items[i] = player->items[i + 1];
     }
     player->itemCount--;
-    player->items[player->itemCount].name[0] = '\0'; // Clear the last item slot
+    player->items[player->itemCount].name[0] = '\0';
 }
 
 void battle(Player *player) {
     Supemon *playerSupemon = NULL;
-    player->selectedSupemonIndex = 0; // Sélectionner le premier Supémon par défaut
+    player->selectedSupemonIndex = 0;
     if (player->selectedSupemonIndex < 0 || player->selectedSupemonIndex >= player->supemonCount) {
         printf(RED "Erreur: Supémon sélectionné invalide.\n" RESET);
         return;
@@ -132,10 +127,8 @@ void battle(Player *player) {
     playerSupemon = &player->supemons[player->selectedSupemonIndex];
     Supemon enemySupemon;
     
-    // Initialiser le générateur de nombres aléatoires
     srand(time(NULL));
 
-    // Sélectionner un Supémon sauvage au hasard
     int randomIndex = rand() % supemonsSauvagesCount;
     enemySupemon = supemonsSauvages[randomIndex];
 
@@ -149,7 +142,6 @@ void battle(Player *player) {
         enemySupemon.evasion = (int)(enemySupemon.evasion * 1.3 + (rand() % 2));
     }
     enemySupemon.HP = enemySupemon.maxHP;
-    // Déterminer qui commence
     int playerTurn = (playerSupemon->speed > enemySupemon.speed) ? 1 : 0;
     printf(BLUE "%s "GREEN"sauvage apparaît !\n" RESET, enemySupemon.name);
     int itemsUsed = 0;
@@ -158,16 +150,14 @@ void battle(Player *player) {
         printf(BLUE "PV de %s:"GREEN" %d\n" RESET, playerSupemon->name, playerSupemon->HP);
         printf(RED "PV de %s:"GREEN" %d\n\n" RESET, enemySupemon.name, enemySupemon.HP);
         if (playerTurn) {
-            // Tour du joueur
             int action;
             printf(CYAN "Choisissez une action :\n"RED"1. Attaque\n"BLUE"2. Changer de Supémon\n"CYAN"3. Utiliser un objet\n"YELLOW"4. Fuir\n"GREEN"5. Capturer\n\n" RESET);
             scanf("%d", &action);
             system("clear");
-            playerTurn = 0; // Passer le tour à l'ennemi
+            playerTurn = 0; 
 
             switch (action) {
                 case 1:
-                    // Le joueur choisit une attaque
                     printf(CYAN "Choisissez un mouvement :\n" RESET);
                     for (int i = 0; i < MAX_MOVES; i++) {
                         if (playerSupemon->moves[i].name[0] != '\0') {
@@ -186,7 +176,6 @@ void battle(Player *player) {
                     }
                     break;
                 case 2:
-                    // Le joueur change de Supémon
                     printf(CYAN "Choisissez un Supémon :\n" RESET);
                     for (int i = 0; i < player->supemonCount; i++) {
                         printf(BLUE"%d. %s\n", i + 1, player->supemons[i].name);
@@ -225,7 +214,7 @@ void battle(Player *player) {
                         float runChance = (float)playerSupemon->speed / (playerSupemon->speed + enemySupemon.speed);
                         if ((float)rand() / RAND_MAX < runChance) {
                             printf(GREEN "Vous avez réussi à fuir !\n" RESET);
-                            return; // Terminer le combat
+                            return; 
                         } else {
                             printf(RED "La fuite a échoué !\n" RESET);
                         }
@@ -234,19 +223,18 @@ void battle(Player *player) {
                 case 5:
                 if (captureSupemon(player, &enemySupemon)) {
                     printf("Bien joué tu as capturé le %s\n" , enemySupemon.name);
-                    return; // Terminer le combat après une capture réussie
+                    return; 
                 }
                     break;
                 default:
                     printf(RED "Action invalide. Réessayez.\n" RESET);
             }
         } else {
-            // Tour de l'ennemi
             int moveIndex = rand() % MAX_MOVES;
             Move enemyMove = enemySupemon.moves[moveIndex];
             printf(CYAN "L'ennemi "RED"%s "CYAN"utilise"BLUE" %s !\n\n" RESET, enemySupemon.name, enemyMove.name);
             applyMove(&enemySupemon, playerSupemon, enemyMove);
-            playerTurn = 1; // Passer le tour au joueur
+            playerTurn = 1;
         }
     }
 

@@ -46,7 +46,7 @@ void shop(Player *player) {
                     player->supcoins -= 700;
                     strcpy(player->items[player->itemCount].name, "Bonbon Giga Rare");
                     player->items[player->itemCount].price = 700;
-                    player->items[player->itemCount].effectValue = 1; // Rare Candy effect
+                    player->items[player->itemCount].effectValue = 1; 
                     player->itemCount++;
                     printf(GREEN "Tu as acheté un Bonbon Giga Rare !\n" RESET);
                 } else {
@@ -85,7 +85,6 @@ void sellItems(Player *player) {
         player->supcoins += sellPrice;
         printf(GREEN "Vous avez vendu %s pour %d Supcoins.\n" RESET, player->items[choice - 1].name, sellPrice);
 
-        // Supprimer l'item vendu de l'inventaire
         for (int i = choice - 1; i < player->itemCount - 1; i++) {
             player->items[i] = player->items[i + 1];
         }
