@@ -119,11 +119,20 @@ void useItem(Player *player, Supemon *supemon, int itemIndex) {
 
 void battle(Player *player) {
     Supemon *playerSupemon = NULL;
-    player->selectedSupemonIndex = 0;
-    if (player->selectedSupemonIndex < 0 || player->selectedSupemonIndex >= player->supemonCount) {
-        printf(RED "Erreur: Supémon sélectionné invalide.\n" RESET);
-        return;
-    }
+    int supemonIndex;
+    do {
+        printf(CYAN "Choisissez un Supémon pour le combat :\n" RESET);
+        for (int i = 0; i < player->supemonCount; i++) {
+            printf(BLUE"%d. %s (HP: %d/%d)\n" RESET, i + 1, player->supemons[i].name, player->supemons[i].HP, player->supemons[i].maxHP);
+        }
+        scanf("%d", &supemonIndex);
+        supemonIndex--;
+        if (supemonIndex < 0 || supemonIndex >= player->supemonCount || player->supemons[supemonIndex].HP == 0) {
+            printf(RED "Choix invalide. Veuillez choisir un Supémon avec des PV.\n" RESET);
+        }
+    } while (supemonIndex < 0 || supemonIndex >= player->supemonCount || player->supemons[supemonIndex].HP == 0);
+
+    player->selectedSupemonIndex = supemonIndex;
     playerSupemon = &player->supemons[player->selectedSupemonIndex];
     Supemon enemySupemon;
     
