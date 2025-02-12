@@ -125,7 +125,10 @@ void battle(Player *player) {
         for (int i = 0; i < player->supemonCount; i++) {
             printf(BLUE"%d. %s (HP: %d/%d)\n" RESET, i + 1, player->supemons[i].name, player->supemons[i].HP, player->supemons[i].maxHP);
         }
-        scanf("%d", &supemonIndex);
+        if (scanf("%d", &supemonIndex) != 1) {
+            while (getchar() != '\n');
+            supemonIndex = -1;
+        }
         supemonIndex--;
         if (supemonIndex < 0 || supemonIndex >= player->supemonCount || player->supemons[supemonIndex].HP == 0) {
             printf(RED "Choix invalide. Veuillez choisir un Supémon avec des PV.\n" RESET);
@@ -161,7 +164,10 @@ void battle(Player *player) {
         if (playerTurn) {
             int action;
             printf(CYAN "Choisissez une action :\n"RED"1. Attaque\n"BLUE"2. Changer de Supémon\n"CYAN"3. Utiliser un objet\n"YELLOW"4. Fuir\n"GREEN"5. Capturer\n\n" RESET);
-            scanf("%d", &action);
+            if (scanf("%d", &action) != 1) {
+                while (getchar() != '\n');
+                action = -1;
+            }
             system("clear");
             playerTurn = 0; 
 
@@ -176,7 +182,10 @@ void battle(Player *player) {
                         }
                     }
                     int moveIndex;
-                    scanf("%d", &moveIndex);
+                    if (scanf("%d", &moveIndex) != 1) {
+                        while (getchar() != '\n');
+                        moveIndex = -1;
+                    }
                     system("clear");
                     if (moveIndex > 0 && moveIndex <= MAX_MOVES) {
                         applyMove(playerSupemon, &enemySupemon, playerSupemon->moves[moveIndex - 1]);
@@ -187,10 +196,12 @@ void battle(Player *player) {
                 case 2:
                     printf(CYAN "Choisissez un Supémon :\n" RESET);
                     for (int i = 0; i < player->supemonCount; i++) {
-                        printf(BLUE"%d. %s\n", i + 1, player->supemons[i].name);
+                        printf(BLUE"%d. %s\n" RESET, i + 1, player->supemons[i].name);
                     }
-                    int supemonIndex;
-                    scanf("%d", &supemonIndex);
+                    if (scanf("%d", &supemonIndex) != 1) {
+                        while (getchar() != '\n');
+                        supemonIndex = -1;
+                    }
                     if (supemonIndex > 0 && supemonIndex <= player->supemonCount) {
                         player->selectedSupemonIndex = supemonIndex - 1;
                         playerSupemon = &player->supemons[player->selectedSupemonIndex];
@@ -200,23 +211,26 @@ void battle(Player *player) {
                     }
                     break;
                 case 3:
-                if (itemsUsed < 4) {
-                    printf(CYAN "Choisissez un objet :\n" RESET);
-                    for (int i = 0; i < player->itemCount; i++) {
-                        printf(BLUE"%d. %s\n", i + 1, player->items[i].name);
-                    }
-                    int itemIndex;
-                    scanf("%d", &itemIndex);
-                    system("clear");
-                    if (itemIndex > 0 && itemIndex <= player->itemCount) {
-                        useItem(player, playerSupemon, itemIndex - 1);
-                        itemsUsed++;
+                    if (itemsUsed < 4) {
+                        printf(CYAN "Choisissez un objet :\n" RESET);
+                        for (int i = 0; i < player->itemCount; i++) {
+                            printf(BLUE"%d. %s\n" RESET, i + 1, player->items[i].name);
+                        }
+                        int itemIndex;
+                        if (scanf("%d", &itemIndex) != 1) {
+                            while (getchar() != '\n');
+                            itemIndex = -1;
+                        }
+                        system("clear");
+                        if (itemIndex > 0 && itemIndex <= player->itemCount) {
+                            useItem(player, playerSupemon, itemIndex - 1);
+                            itemsUsed++;
+                        } else {
+                            printf(RED "Objet invalide.\n" RESET);
+                        }
                     } else {
-                        printf(RED "Objet invalide.\n" RESET);
+                        printf(RED "Vous avez déjà utilisé le nombre maximum d'objets dans ce combat.\n" RESET);
                     }
-                } else {
-                    printf(RED "Vous avez déjà utilisé le nombre maximum d'objets dans ce combat.\n" RESET);
-                }
                     break;
                 case 4:
                     {
@@ -230,10 +244,10 @@ void battle(Player *player) {
                     }
                     break;
                 case 5:
-                if (captureSupemon(player, &enemySupemon)) {
-                    printf("Bien joué tu as capturé le %s\n" , enemySupemon.name);
-                    return; 
-                }
+                    if (captureSupemon(player, &enemySupemon)) {
+                        printf("Bien joué tu as capturé le %s\n" , enemySupemon.name);
+                        return; 
+                    }
                     break;
                 default:
                     printf(RED "Action invalide. Réessayez.\n" RESET);

@@ -27,26 +27,32 @@ void loadGame(Player *player) {
 
 void displayMenu(Player *player) {
     int choice;
-    printf("1. Charger une partie sauvegardée\n");
-    printf("2. Démarrer une nouvelle partie\n");
-    printf("3. Quitter\n");
-    printf("Choisissez une option : ");
-    scanf("%d", &choice);
-    system("clear");
-    switch (choice) {
-        case 1:
-            loadGame(player);
-            break;
-        case 2:
-            printf("Démarrage d'une nouvelle partie (fonctionnalité à implémenter)\n");
-            break;
-        case 3:
-            printf("Au revoir !\n");
-            exit(0);
-            break;
-        default:
-            printf("Choix invalide. Veuillez réessayer.\n");
-            displayMenu(player);
-            break;
-    }
+    do {
+        printf("1. Charger une partie sauvegardée\n");
+        printf("2. Démarrer une nouvelle partie\n");
+        printf("3. Quitter\n");
+        printf("Choisissez une option : ");
+
+        if (scanf("%d", &choice) != 1) {
+            while (getchar() != '\n');
+            choice = -1;
+        }
+
+        system("clear");
+
+        switch (choice) {
+            case 1:
+                loadGame(player);
+                break;
+            case 2:
+                printf("Démarrage d'une nouvelle partie (fonctionnalité à implémenter)\n");
+                break;
+            case 3:
+                printf("Au revoir !\n");
+                exit(0);
+                break;
+            default:
+                printf("Choix invalide. Veuillez réessayer.\n");
+        }
+    } while (choice < 1 || choice > 3);
 }

@@ -82,6 +82,14 @@ int main() {
     printf(BOLD CYAN"Choisissez entre "RED"1:Supmander,"BLUE" 2:Supasaur "CYAN" et "GREEN" 3:Supirtle\n"RESET);
     scanf("%d", &player.selectedSupemonIndex);
     system("clear");
+
+    while (player.selectedSupemonIndex < 1 || player.selectedSupemonIndex > 3) {
+        printf("Choix invalide\n");
+        printf(BOLD CYAN"Choisissez entre "RED"1:Supmander,"BLUE" 2:Supasaur "CYAN" et "GREEN" 3:Supirtle\n"RESET);
+        scanf("%d", &player.selectedSupemonIndex);
+        while (getchar() != '\n'); // Clear input buffer
+    }
+
     if (player.selectedSupemonIndex == 1) {
         printf(RED"Vous avez choisi Supmander\n"RESET);
         addSupemon(&player, supmander);
@@ -91,9 +99,8 @@ int main() {
     } else if (player.selectedSupemonIndex == 3) {
         printf(GREEN"Vous avez choisi Supirtle\n"RESET);
         addSupemon(&player, supirtle);
-    } else {
-        printf("Choix invalide\n");
     }
+
     mainMenu(&player);
 
     return 0;
@@ -115,7 +122,11 @@ void mainMenu(Player *player) {
         printf(CYAN "4. Sauvegarder le jeu\n" RESET);
         printf(RED "5. Quitter\n" RESET);
         printf(YELLOW "\nChoisissez une option : "RESET);
-        scanf("%d", &choice);
+
+        if (scanf("%d", &choice) != 1) {
+            while (getchar() != '\n');
+            choice = -1;
+        }
 
         system("clear");
 
@@ -139,5 +150,5 @@ void mainMenu(Player *player) {
             default:
                 printf(RED "Choix invalide. Essayez encore.\n" RESET);
         }
-    } while (choice != 6);
+    } while (choice != 5);
 }

@@ -14,8 +14,15 @@ void shop(Player *player) {
         printf(GREEN "4. Vendre des items\n" RESET);
         printf(RED "5. Quitter la boutique\n" RESET);
         printf(CYAN "\nChoisissez une option : " RESET);
-        scanf("%d", &choice);
+
+        if (scanf("%d", &choice) != 1) {
+            // If input is not an integer, clear the input buffer and set choice to an invalid value
+            while (getchar() != '\n');
+            choice = -1;
+        }
+
         system("clear");
+
         switch (choice) {
             case 1:
                 if (player->supcoins >= 100 && player->itemCount < MAX_ITEMS) {
@@ -50,7 +57,7 @@ void shop(Player *player) {
                     player->itemCount++;
                     printf(GREEN "Tu as acheté un Bonbon Giga Rare !\n" RESET);
                 } else {
-                    printf(RED "C'est la desh4 ou t'as plus de place.\n" RESET);
+                    printf(RED "C'est la desh ou t'as plus de place.\n" RESET);
                 }
                 break;
             case 4:
@@ -78,10 +85,16 @@ void sellItems(Player *player) {
 
     int choice;
     printf(CYAN "Choisissez un item à vendre (0 pour annuler) : " RESET);
-    scanf("%d", &choice);
+
+    if (scanf("%d", &choice) != 1) {
+        while (getchar() != '\n');
+        choice = -1;
+    }
+
     system("clear");
+
     if (choice > 0 && choice <= player->itemCount) {
-        int sellPrice = player->items[choice - 1].price /2;
+        int sellPrice = player->items[choice - 1].price / 2;
         player->supcoins += sellPrice;
         printf(GREEN "Vous avez vendu %s pour %d Supcoins.\n" RESET, player->items[choice - 1].name, sellPrice);
 
